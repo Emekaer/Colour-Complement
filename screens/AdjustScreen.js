@@ -1,10 +1,30 @@
-import React from "react";
-import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
+import React, { useState } from "react";
+import { View, StyleSheet, Text } from "react-native";
+import { ColorPicker, fromHsv } from "react-native-color-picker";
 
 const AdjustScreen = (props) => {
+  const oldColor = props.route.params.oldColor;
+
+  const [changedColor, setChangedColor] = useState(oldColor);
+
+  const colorChangeHandler = (color) => {
+    setChangedColor(fromHsv(color));
+  };
+
   return (
     <View style={styles.screen}>
-      <Text>This is the AdjustScreen</Text>
+      <View style={styles.infoArea}>
+        <Text style={styles.text}>HEX CODE</Text>
+        <Text style={styles.text}>{changedColor}</Text>
+      </View>
+
+      <ColorPicker
+        style={{ flex: 1, flexDirection: "column", height: 200 }}
+        oldColor={oldColor}
+        onColorChange={(color) => {
+          colorChangeHandler(color);
+        }}
+      />
     </View>
   );
 };
@@ -12,8 +32,21 @@ const AdjustScreen = (props) => {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    alignItems: "center",
+    flexDirection: "column",
     justifyContent: "center",
+  },
+  infoArea: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-around",
+    height: 100,
+    borderBottomColor: "#ccc",
+    borderBottomWidth: 1,
+    marginBottom: -150,
+  },
+  text: {
+    fontWeight: "400",
+    fontSize: 23,
   },
 });
 

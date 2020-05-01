@@ -31,7 +31,12 @@ const HomeStack = () => {
         }}
       />
       <Stack.Screen name="DetailScreen" component={DetailScreen} />
-      <Stack.Screen name="AdjustScreen" component={AdjustScreen} />
+      <Stack.Screen name="AdjustScreen" component={AdjustScreen}
+       options={(navData) => {
+        return {
+          headerTitle: "Adjust Colour",
+        };
+      }} />
     </Stack.Navigator>
   );
 };

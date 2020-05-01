@@ -1,36 +1,29 @@
-import React, { useState, useLayoutEffect} from "react";
-import {
-  ScrollView,
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  Text,
-} from "react-native";
+import React, { useState, useLayoutEffect } from "react";
+import { ScrollView, View, StyleSheet, Text } from "react-native";
 import { ColorPicker } from "react-native-color-picker";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 
 import CustomHeaderButton from "../components/HeaderButton";
+import ColourTile from "../components/ColourTile";
 
 const HomeScreen = (props) => {
   const [colour, setColour] = useState(false);
   const [chosenColor, setchosenColor] = useState();
 
-  const {navigation} =props
+  const { navigation } = props;
 
   useLayoutEffect(() => {
-    navigation.setOptions({  headerRight: () => (
-      <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
-        <Item title="Reset" iconName={"md-refresh"} onPress={resetHandler} />
-      </HeaderButtons>
-    )});
-  }, [navigation,resetHandler]);
+    navigation.setOptions({
+      headerRight: () => (
+        <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+          <Item title="Reset" iconName={"md-refresh"} onPress={resetHandler} />
+        </HeaderButtons>
+      ),
+    });
+  }, [navigation, resetHandler]);
 
   const pressHandler = () => {
-    navigation.navigate("AdjustScreen");
-  };
-
-  const longPressHandler = () => {
-   navigation.navigate("DetailScreen");
+    navigation.navigate("AdjustScreen", { oldColor: chosenColor });
   };
 
   const setColourHandler = (color) => {
@@ -60,18 +53,16 @@ const HomeScreen = (props) => {
         ) : (
           <ColorPicker
             style={{ flex: 1 }}
-            oldColor="red"
             onColorSelected={(color) => {
               setColourHandler(color);
             }}
           />
         )}
+        
       </View>
-      <TouchableOpacity onLongPress={longPressHandler} onPress={pressHandler}>
-        <View style={styles.component}>
-          <Text>RED</Text>
-        </View>
-      </TouchableOpacity>
+      <View>
+      <ColourTile  pressHandler={pressHandler} chosenColour={chosenColor}/>
+      </View>
     </ScrollView>
   );
 };
@@ -80,14 +71,6 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     flexDirection: "column",
-  },
-  component: {
-    margin: 15,
-    width: 150,
-    height: 125,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "red",
   },
   selectionArea: {
     flex: 1,
