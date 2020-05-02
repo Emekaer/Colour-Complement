@@ -39,15 +39,7 @@ const HomeScreen = (props) => {
     <ScrollView style={styles.screen}>
       <View style={styles.selectionArea}>
         {colour ? (
-          <View
-            style={{
-              width: "100%",
-              height: "100%",
-              backgroundColor: chosenColor,
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
+          <View style={{ ...styles.pickedColor, backgroundColor: chosenColor }}>
             <Text>{chosenColor}</Text>
           </View>
         ) : (
@@ -58,10 +50,9 @@ const HomeScreen = (props) => {
             }}
           />
         )}
-        
       </View>
       <View>
-      <ColourTile  pressHandler={pressHandler} chosenColour={chosenColor}/>
+        <ColourTile pressHandler={pressHandler} chosenColour={chosenColor} />
       </View>
     </ScrollView>
   );
@@ -83,6 +74,18 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     alignItems: "center",
     justifyContent: "center",
+  },
+  pickedColor: {
+    width: "100%",
+    height: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "black",
+    shadowOpacity: 0.26,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 8,
+    elevation: 5,
+    borderRadius: 10,
   },
 });
 

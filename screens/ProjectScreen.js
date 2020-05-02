@@ -1,10 +1,10 @@
 import React from "react";
 import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 
-const DetailScreen = (props) => {
+const ProjectScreen = (props) => {
   return (
     <View style={styles.screen}>
-      <Text>This is the DetailScreen</Text>
+      <Text>This is the ProjectScreen</Text>
     </View>
   );
 };
@@ -17,4 +17,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DetailScreen;
+export default ProjectScreen;
