@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { View, StyleSheet, Text } from "react-native";
 import { ColorPicker, fromHsv } from "react-native-color-picker";
+import { hexToRgb, rgbString } from "../functions/functions";
 
 const AdjustScreen = (props) => {
   const oldColor = props.route.params.oldColor;
@@ -16,6 +17,10 @@ const AdjustScreen = (props) => {
       <View style={styles.infoArea}>
         <Text style={styles.text}>HEX CODE</Text>
         <Text style={styles.text}>{changedColor}</Text>
+      </View>
+      <View style={styles.infoArea}>
+        <Text style={styles.text}>RGB</Text>
+        <Text style={styles.text}>{rgbString(changedColor)}</Text>
       </View>
 
       <ColorPicker
@@ -42,7 +47,6 @@ const styles = StyleSheet.create({
     height: 100,
     borderBottomColor: "#ccc",
     borderBottomWidth: 1,
-    marginBottom: -150,
   },
   text: {
     fontWeight: "400",

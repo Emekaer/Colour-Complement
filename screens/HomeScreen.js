@@ -5,6 +5,7 @@ import { HeaderButtons, Item } from "react-navigation-header-buttons";
 
 import CustomHeaderButton from "../components/HeaderButton";
 import ColourTile from "../components/ColourTile";
+import { complementaryColor } from "../functions/functions";
 
 const HomeScreen = (props) => {
   const [colour, setColour] = useState(false);
@@ -34,7 +35,7 @@ const HomeScreen = (props) => {
   const resetHandler = () => {
     setColour(false);
   };
-
+  
   return (
     <ScrollView style={styles.screen}>
       <View style={styles.selectionArea}>
@@ -52,7 +53,14 @@ const HomeScreen = (props) => {
         )}
       </View>
       <View>
-        <ColourTile pressHandler={pressHandler} chosenColour={chosenColor} />
+        {colour ? (
+          <ColourTile
+            pressHandler={pressHandler}
+            chosenColour={complementaryColor(chosenColor)}
+          />
+        ) : (
+          <View><Text>Please Select a colour</Text></View>
+        )}
       </View>
     </ScrollView>
   );
