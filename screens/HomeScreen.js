@@ -5,7 +5,7 @@ import { HeaderButtons, Item } from "react-navigation-header-buttons";
 
 import CustomHeaderButton from "../components/HeaderButton";
 import ColourTile from "../components/ColourTile";
-import { complementaryColor } from "../functions/functions";
+import { complementaryColor, triad } from "../functions/functions";
 
 const HomeScreen = (props) => {
   const [colour, setColour] = useState(false);
@@ -56,7 +56,7 @@ const HomeScreen = (props) => {
         {colour ? (
           <ColourTile
             pressHandler={pressHandler}
-            chosenColour={complementaryColor(chosenColor)}
+            chosenColour={triad(chosenColor).triad2}
           />
         ) : (
           <View><Text>Please Select a colour</Text></View>

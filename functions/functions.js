@@ -29,32 +29,40 @@ export const rgbString = (value) => {
 //Returns complementary hex color string
 export const complementaryColor = (value) => {
   const hex = parseInt(value.replace(/^#/, ""), 16);
-  console.log(hex);
   const full = 0xffffff;
-  console.log(full);
   const result = (full - hex).toString(16);
-  console.log(result);
 
   if (result.length == 1) {
-    console.log("try1");
     return `#00000${result}`;
   } 
   if (result.length == 2 ) {
-    console.log("try2");
     return `#0000${result}`;
   }  if (result.length == 3) {
-    console.log("try3");
     return `#000${result}`;
   }  if (result.length == 4) {
-    console.log("try4");
     return `#00${result}`;
   }  if (result.length == 5) {
-    console.log("try5");
     return `#0${result}`;
   } else {
     return `#${result}`;
   }
 };
+
+export const triad = value =>{
+  const hex = parseInt(value.replace(/^#/, ""), 16).toString(16);
+  console.log(hex)
+  const R= hex.slice(0,2)
+  const G= hex.slice(2,4)
+  const B= hex.slice(4,6)
+  
+  const triad1= `#${B+R+G.toString(16)}`
+  const triad2 = `#${G+B+R.toString(16)}`
+  console.log(triad2)
+  return{
+    triad1,
+    triad2   
+  }
+}
 
 //returns complementary color rgb value
 export const compString = (value) => {
