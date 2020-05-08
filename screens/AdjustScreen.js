@@ -5,6 +5,7 @@ import { hexToRgb, rgbString } from "../functions/functions";
 
 const AdjustScreen = (props) => {
   const oldColor = props.route.params.oldColor;
+  const setColor = props.route.params.color;
 
   const [changedColor, setChangedColor] = useState(oldColor);
 
@@ -26,6 +27,7 @@ const AdjustScreen = (props) => {
       <ColorPicker
         style={{ flex: 1, flexDirection: "column", height: 200 }}
         oldColor={oldColor}
+        color={setColor}
         onColorChange={(color) => {
           colorChangeHandler(color);
         }}

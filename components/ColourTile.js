@@ -8,7 +8,9 @@ const ColourTile = (props) => {
         <View
           style={{ ...styles.component, backgroundColor: props.chosenColour }}
         >
-          <Text>Click to Adjust</Text>
+          <Text style={{...styles.text, /* color:props.mainColor */}}>Click to Adjust</Text>
+  <Text style={{...styles.text, /* color:props.mainColor */}}>{props.schemeType}</Text>
+  <Text style={{...styles.text, /* color:props.mainColor */}}>{props.schemeColor.toUpperCase()}</Text>
         </View>
       </TouchableOpacity>
     </View>
@@ -31,7 +33,9 @@ const styles = StyleSheet.create({
   },
   text: {
     fontWeight: "400",
-    fontSize: 23,
+    fontSize: 16,
+    color: "white",
+    textAlign: "center",
   },
 });
 
