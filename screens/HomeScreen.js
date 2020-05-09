@@ -5,7 +5,7 @@ import { HeaderButtons, Item } from "react-navigation-header-buttons";
 
 import CustomHeaderButton from "../components/HeaderButton";
 import ColourTile from "../components/ColourTile";
-import { complementaryColor, triad, analogous} from "../functions/functions";
+import { complementaryColor, triad, analogous, tetradic, monoch} from "../functions/functions";
 
 const HomeScreen = (props) => {
   const [colour, setColour] = useState(false);
@@ -70,6 +70,24 @@ const HomeScreen = (props) => {
             />
             <ColourTile
               pressHandler={() => {
+                pressHandler(monoch(chosenColor).monoch1)
+              }}
+              chosenColour={monoch(chosenColor).monoch1}
+              schemeType={"Monochromatic 1"}
+              schemeColor={monoch(chosenColor).monoch1}
+              /* mainColor={chosenColor} */
+            />
+             <ColourTile
+              pressHandler={() => {
+                pressHandler(monoch(chosenColor).monoch2)
+              }}
+              chosenColour={monoch(chosenColor).monoch2}
+              schemeType={"Monochromatic 2"}
+              schemeColor={monoch(chosenColor).monoch2}
+              /* mainColor={chosenColor} */
+            />
+            <ColourTile
+              pressHandler={() => {
                 pressHandler(triad(chosenColor).triad1)
               }}
               chosenColour={triad(chosenColor).triad1}
@@ -104,7 +122,33 @@ const HomeScreen = (props) => {
               schemeColor={analogous(chosenColor).analog2}
               /* mainColor={chosenColor} */
             />
-           
+            <ColourTile
+              pressHandler={() => {
+                pressHandler(tetradic(chosenColor).tetradic1)
+              }}
+              chosenColour={tetradic(chosenColor).tetradic1}
+              schemeType={"Tetradic 1"}
+              schemeColor={tetradic(chosenColor).tetradic1}
+              /* mainColor={chosenColor} */
+            />
+             <ColourTile
+              pressHandler={() => {
+                pressHandler(tetradic(chosenColor).tetradic2)
+              }}
+              chosenColour={tetradic(chosenColor).tetradic2}
+              schemeType={"Tetradic 2"}
+              schemeColor={tetradic(chosenColor).tetradic2}
+              /* mainColor={chosenColor} */
+            />
+             <ColourTile
+              pressHandler={() => {
+                pressHandler(tetradic(chosenColor).tetradic3)
+              }}
+              chosenColour={tetradic(chosenColor).tetradic3}
+              schemeType={"Tetradic 3"}
+              schemeColor={tetradic(chosenColor).tetradic3}
+              /* mainColor={chosenColor} */
+            />
           </View>
         ) : (
           <View>
