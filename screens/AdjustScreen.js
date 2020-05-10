@@ -27,7 +27,7 @@ const AdjustScreen = (props) => {
       <ColorPicker
         style={{ flex: 1, flexDirection: "column", height: 200 }}
         oldColor={oldColor}
-        color={setColor}
+        defaultColor={setColor}
         onColorChange={(color) => {
           colorChangeHandler(color);
         }}

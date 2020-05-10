@@ -6,10 +6,10 @@ import { combineReducers, createStore } from "redux";
 
 import AppDrawer from "./navigation/navigation";
 
-import colors from "./store/reducers/colors";
+import colorsReducer from "./store/reducers/colors";
 
 const reducers = combineReducers({
-  colors: colors,
+  colors: colorsReducer,
 });
 
 const root = createStore(reducers);

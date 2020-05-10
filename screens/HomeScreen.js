@@ -1,20 +1,20 @@
 import React, { useState, useLayoutEffect } from "react";
+import { ScrollView, View, StyleSheet, Text, FlatList } from "react-native";
 import {
-  ScrollView,
-  View,
-  StyleSheet,
-  Text,
-  SectionList,
-  FlatList,
-} from "react-native";
+  complementaryColor,
+  triad,
+  analogous,
+  tetradic,
+  monoch,
+} from "../functions/functions";
 import { ColorPicker } from "react-native-color-picker";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 
 import CustomHeaderButton from "../components/HeaderButton";
 import ColourTile from "../components/ColourTile";
 import { useDispatch } from "react-redux";
-import Complements from "../functions/functionArray";
-import { setColor,resetColor } from "../store/actions/colors";
+
+import { setColor, resetColor } from "../store/actions/colors";
 
 const HomeScreen = (props) => {
   const [colour, setColour] = useState(false);
@@ -39,19 +39,61 @@ const HomeScreen = (props) => {
       oldColor: chosenColor,
       color: color,
     });
-    
   };
 
   const setColourHandler = (color) => {
     setColour(true);
     setchosenColor(color);
-    dispatch(setColor(color));
+    dispatch(setColor(chosenColor));
   };
 
   const resetHandler = () => {
     setColour(false);
-    dispatch(resetColor())
+    dispatch(resetColor());
   };
+
+  const Complements = [
+    {
+      title: "Complementary Colour",
+      data: complementaryColor(colour ? chosenColor : "#ff0000"),
+    },
+    {
+      title: "Monochromatic 1",
+      data: monoch(colour ? chosenColor : "#ff0000").monoch1,
+    },
+    {
+      title: "Monochromatic 2",
+      data: monoch(colour ? chosenColor : "#ff0000").monoch2,
+    },
+    {
+      title: "Triad 1",
+      data: triad(colour ? chosenColor : "#ff0000").triad1,
+    },
+    {
+      title: "Triad 2",
+      data: triad(colour ? chosenColor : "#ff0000").triad2,
+    },
+    {
+      title: "Analogous 1",
+      data: analogous(colour ? chosenColor : "#ff0000").analog1,
+    },
+    {
+      title: "Analogous 2",
+      data: analogous(colour ? chosenColor : "#ff0000").analog2,
+    },
+    {
+      title: "Tetradic 1",
+      data: tetradic(colour ? chosenColor : "#ff0000").tetradic1,
+    },
+    {
+      title: "Tetradic 2",
+      data: tetradic(colour ? chosenColor : "#ff0000").tetradic2,
+    },
+    {
+      title: "Tetradic 3",
+      data: tetradic(colour ? chosenColor : "#ff0000").tetradic3,
+    },
+  ];
 
   return (
     <ScrollView style={styles.screen}>
@@ -74,7 +116,6 @@ const HomeScreen = (props) => {
           <View style={styles.selectArea}>
             <FlatList
               numColumns={2}
-              contentContainerStyle={{ justifyContent: "space-evenly" }}
               data={Complements}
               keyExtractor={(item) => item.title}
               renderItem={({ item }) => (
@@ -134,7 +175,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-around",
-    padding: 26,
+    paddingHorizontal: 26,
   },
 });
 

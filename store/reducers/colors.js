@@ -4,21 +4,21 @@ const initialState = {
   selectedColor: ["#FF0000"],
 };
 
-export default (state = initialState, action) => {
+const colorsReducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_COLOR:
-        console.log(action.color)
       return {
-        selectedColor: action.color,
-        
+        ...state,
+        selectedColor: [action.color],
       };
-
     case RESET_COLOR:
       return {
         selectedColor: [],
       };
-     
-  } 
-  console.log(state)
-  return state;
-};
+    default:
+      
+      return state;
+  }
+};    
+
+export default colorsReducer;
