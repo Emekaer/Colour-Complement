@@ -12,20 +12,17 @@ import { HeaderButtons, Item } from "react-navigation-header-buttons";
 
 import CustomHeaderButton from "../components/HeaderButton";
 import ColourTile from "../components/ColourTile";
-import {
-  complementaryColor,
-  triad,
-  analogous,
-  tetradic,
-  monoch,
-} from "../functions/functions";
+import { useDispatch } from "react-redux";
 import Complements from "../functions/functionArray";
+import { setColor,resetColor } from "../store/actions/colors";
 
 const HomeScreen = (props) => {
   const [colour, setColour] = useState(false);
   const [chosenColor, setchosenColor] = useState();
 
   const { navigation } = props;
+
+  const dispatch = useDispatch();
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -42,15 +39,18 @@ const HomeScreen = (props) => {
       oldColor: chosenColor,
       color: color,
     });
+    
   };
 
   const setColourHandler = (color) => {
     setColour(true);
     setchosenColor(color);
+    dispatch(setColor(color));
   };
 
   const resetHandler = () => {
     setColour(false);
+    dispatch(resetColor())
   };
 
   return (
@@ -74,7 +74,7 @@ const HomeScreen = (props) => {
           <View style={styles.selectArea}>
             <FlatList
               numColumns={2}
-              contentContainerStyle={{  justifyContent: "space-evenly" }}
+              contentContainerStyle={{ justifyContent: "space-evenly" }}
               data={Complements}
               keyExtractor={(item) => item.title}
               renderItem={({ item }) => (
@@ -83,7 +83,7 @@ const HomeScreen = (props) => {
                     pressHandler(item.data);
                   }}
                   chosenColour={item.data}
-                  schemeType={item.data}
+                  schemeType={item.title}
                   schemeColor={item.data}
                   /*  mainColor={chosenColor}  */
                 />
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-around",
-    padding: 26
+    padding: 26,
   },
 });
 
