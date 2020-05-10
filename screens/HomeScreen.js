@@ -1,11 +1,25 @@
 import React, { useState, useLayoutEffect } from "react";
-import { ScrollView, View, StyleSheet, Text } from "react-native";
+import {
+  ScrollView,
+  View,
+  StyleSheet,
+  Text,
+  SectionList,
+  FlatList,
+} from "react-native";
 import { ColorPicker } from "react-native-color-picker";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 
 import CustomHeaderButton from "../components/HeaderButton";
 import ColourTile from "../components/ColourTile";
-import { complementaryColor, triad, analogous, tetradic, monoch} from "../functions/functions";
+import {
+  complementaryColor,
+  triad,
+  analogous,
+  tetradic,
+  monoch,
+} from "../functions/functions";
+import Complements from "../functions/functionArray";
 
 const HomeScreen = (props) => {
   const [colour, setColour] = useState(false);
@@ -24,7 +38,6 @@ const HomeScreen = (props) => {
   }, [navigation, resetHandler]);
 
   const pressHandler = (color) => {
-  
     navigation.navigate("AdjustScreen", {
       oldColor: chosenColor,
       color: color,
@@ -59,95 +72,22 @@ const HomeScreen = (props) => {
       <View>
         {colour ? (
           <View style={styles.selectArea}>
-            <ColourTile
-              pressHandler={() => {
-                 pressHandler(complementaryColor(chosenColor));
-              }}
-              chosenColour={complementaryColor(chosenColor)}
-              schemeType={"Complementary Color"}
-              schemeColor={complementaryColor(chosenColor)}
-              /* mainColor={chosenColor} */
-            />
-            <ColourTile
-              pressHandler={() => {
-                pressHandler(monoch(chosenColor).monoch1)
-              }}
-              chosenColour={monoch(chosenColor).monoch1}
-              schemeType={"Monochromatic 1"}
-              schemeColor={monoch(chosenColor).monoch1}
-              /* mainColor={chosenColor} */
-            />
-             <ColourTile
-              pressHandler={() => {
-                pressHandler(monoch(chosenColor).monoch2)
-              }}
-              chosenColour={monoch(chosenColor).monoch2}
-              schemeType={"Monochromatic 2"}
-              schemeColor={monoch(chosenColor).monoch2}
-              /* mainColor={chosenColor} */
-            />
-            <ColourTile
-              pressHandler={() => {
-                pressHandler(triad(chosenColor).triad1)
-              }}
-              chosenColour={triad(chosenColor).triad1}
-              schemeType={"Triad 1"}
-              schemeColor={triad(chosenColor).triad1}
-              /*  mainColor={chosenColor} */
-            />
-            <ColourTile
-              pressHandler={() => {
-                pressHandler(triad(chosenColor).triad2)
-              }}
-              chosenColour={triad(chosenColor).triad2}
-              schemeType={"Triad 2"}
-              schemeColor={triad(chosenColor).triad2}
-              /* mainColor={chosenColor} */
-            />
-            <ColourTile
-              pressHandler={() => {
-                pressHandler(analogous(chosenColor).analog1)
-              }}
-              chosenColour={analogous(chosenColor).analog1}
-              schemeType={"Analogous 1"}
-              schemeColor={analogous(chosenColor).analog1}
-              /* mainColor={chosenColor} */
-            />
-            <ColourTile
-              pressHandler={() => {
-                pressHandler(analogous(chosenColor).analog2)
-              }}
-              chosenColour={analogous(chosenColor).analog2}
-              schemeType={"Analogous 2"}
-              schemeColor={analogous(chosenColor).analog2}
-              /* mainColor={chosenColor} */
-            />
-            <ColourTile
-              pressHandler={() => {
-                pressHandler(tetradic(chosenColor).tetradic1)
-              }}
-              chosenColour={tetradic(chosenColor).tetradic1}
-              schemeType={"Tetradic 1"}
-              schemeColor={tetradic(chosenColor).tetradic1}
-              /* mainColor={chosenColor} */
-            />
-             <ColourTile
-              pressHandler={() => {
-                pressHandler(tetradic(chosenColor).tetradic2)
-              }}
-              chosenColour={tetradic(chosenColor).tetradic2}
-              schemeType={"Tetradic 2"}
-              schemeColor={tetradic(chosenColor).tetradic2}
-              /* mainColor={chosenColor} */
-            />
-             <ColourTile
-              pressHandler={() => {
-                pressHandler(tetradic(chosenColor).tetradic3)
-              }}
-              chosenColour={tetradic(chosenColor).tetradic3}
-              schemeType={"Tetradic 3"}
-              schemeColor={tetradic(chosenColor).tetradic3}
-              /* mainColor={chosenColor} */
+            <FlatList
+              numColumns={2}
+              contentContainerStyle={{  justifyContent: "space-evenly" }}
+              data={Complements}
+              keyExtractor={(item) => item.title}
+              renderItem={({ item }) => (
+                <ColourTile
+                  pressHandler={() => {
+                    pressHandler(item.data);
+                  }}
+                  chosenColour={item.data}
+                  schemeType={item.data}
+                  schemeColor={item.data}
+                  /*  mainColor={chosenColor}  */
+                />
+              )}
             />
           </View>
         ) : (
@@ -194,6 +134,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-around",
+    padding: 26
   },
 });
 

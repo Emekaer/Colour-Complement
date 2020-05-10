@@ -3,7 +3,7 @@ import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 
 const ColourTile = (props) => {
   return (
-    <View>
+    <View >
       <TouchableOpacity onPress={props.pressHandler}>
         <View
           style={{ ...styles.component, backgroundColor: props.chosenColour }}
