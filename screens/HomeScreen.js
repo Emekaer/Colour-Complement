@@ -12,6 +12,7 @@ import { HeaderButtons, Item } from "react-navigation-header-buttons";
 
 import CustomHeaderButton from "../components/HeaderButton";
 import ColourTile from "../components/ColourTile";
+import InputPicker from "../components/InputPicker";
 import { useDispatch } from "react-redux";
 
 import { setColor, resetColor } from "../store/actions/colors";
@@ -19,6 +20,7 @@ import { setColor, resetColor } from "../store/actions/colors";
 const HomeScreen = (props) => {
   const [colour, setColour] = useState(false);
   const [chosenColor, setchosenColor] = useState();
+  const [mode, setMode] = useState(false);
 
   const { navigation } = props;
 
@@ -29,6 +31,11 @@ const HomeScreen = (props) => {
       headerRight: () => (
         <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
           <Item title="Reset" iconName={"md-refresh"} onPress={resetHandler} />
+          <Item
+            title="Mode change"
+            iconName={"md-copy"}
+            onPress={modeChangeHandler}
+          />
         </HeaderButtons>
       ),
     });
@@ -39,6 +46,12 @@ const HomeScreen = (props) => {
       oldColor: chosenColor,
       color: color,
     });
+  };
+
+  const modeChangeHandler = () => {
+    console.log(mode + " Before" + colour);
+    setMode(!mode);
+    console.log(mode + " After" + colour);
   };
 
   const setColourHandler = (color) => {
@@ -52,6 +65,70 @@ const HomeScreen = (props) => {
     dispatch(resetColor());
   };
 
+  let selectPane;
+
+  if (!mode && colour) {
+    selectPane = (
+      <View style={styles.selectionArea}>
+        <View style={{ ...styles.pickedColor, backgroundColor: chosenColor }}>
+          <Text style={{ color: "white" }}>{chosenColor.toUpperCase()}</Text>
+        </View>
+      </View>
+    );
+    return selectPane;
+  } else if (!mode && !colour) {
+    selectPane = (
+      <View style={styles.selectionArea}>
+        <ColorPicker
+          style={{ flex: 1 }}
+          onColorSelected={(color) => {
+            setColourHandler(color);
+          }}
+        />
+      </View>
+    );
+    return selectPane;
+  } else if (mode == false) {
+    selectPane = (
+      <View style={styles.selectionArea}>
+        <InputPicker />
+      </View>
+    );
+
+    return selectPane;
+  }
+
+  let selectedArea;
+  if (colour) {
+    selectedArea = (
+      <View style={styles.selectArea}>
+        <FlatList
+          numColumns={2}
+          data={Complements}
+          keyExtractor={(item) => item.title}
+          renderItem={({ item }) => (
+            <ColourTile
+              pressHandler={() => {
+                pressHandler(item.data);
+              }}
+              chosenColour={item.data}
+              schemeType={item.title}
+              schemeColor={item.data}
+              /*  mainColor={chosenColor}  */
+            />
+          )}
+        />
+      </View>
+    );
+    return selectedArea;
+  } else if (!colour) {
+    selectedArea = (
+      <View>
+        <Text>Please Select a colour</Text>
+      </View>
+    );
+    return selectedArea;
+  }
   const Complements = [
     {
       title: "Complementary Colour",
@@ -97,46 +174,8 @@ const HomeScreen = (props) => {
 
   return (
     <ScrollView style={styles.screen}>
-      <View style={styles.selectionArea}>
-        {colour ? (
-          <View style={{ ...styles.pickedColor, backgroundColor: chosenColor }}>
-            <Text style={{ color: "white" }}>{chosenColor.toUpperCase()}</Text>
-          </View>
-        ) : (
-          <ColorPicker
-            style={{ flex: 1 }}
-            onColorSelected={(color) => {
-              setColourHandler(color);
-            }}
-          />
-        )}
-      </View>
-      <View>
-        {colour ? (
-          <View style={styles.selectArea}>
-            <FlatList
-              numColumns={2}
-              data={Complements}
-              keyExtractor={(item) => item.title}
-              renderItem={({ item }) => (
-                <ColourTile
-                  pressHandler={() => {
-                    pressHandler(item.data);
-                  }}
-                  chosenColour={item.data}
-                  schemeType={item.title}
-                  schemeColor={item.data}
-                  /*  mainColor={chosenColor}  */
-                />
-              )}
-            />
-          </View>
-        ) : (
-          <View>
-            <Text>Please Select a colour</Text>
-          </View>
-        )}
-      </View>
+      <View style={{ flex: 1 }}>{selectPane}</View>
+      <View style={{ flex: 1 }}>{selectedArea}</View>
     </ScrollView>
   );
 };
@@ -147,7 +186,6 @@ const styles = StyleSheet.create({
     flexDirection: "column",
   },
   selectionArea: {
-    flex: 1,
     flexDirection: "row",
     width: "100%",
     height: 200,

@@ -19,7 +19,7 @@ import {useSelector} from "react-redux";
 },{
     title: "Analogous",
     data: [analogous("#FF0000").analog1,analogous("#FF0000").analog2]
-},{
+},{[]
     title: "Tetradic",
     data: [tetradic("#FF0000").tetradic1,tetradic("#FF0000").tetradic2,tetradic("#FF0000").tetradic3]
 }]  */
