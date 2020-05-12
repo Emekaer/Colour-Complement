@@ -20,7 +20,7 @@ import { setColor, resetColor } from "../store/actions/colors";
 const HomeScreen = (props) => {
   const [colour, setColour] = useState(false);
   const [chosenColor, setchosenColor] = useState();
-  const [mode, setMode] = useState(false);
+  const [mode, setMode] = useState(true);
 
   const { navigation } = props;
 
@@ -49,9 +49,7 @@ const HomeScreen = (props) => {
   };
 
   const modeChangeHandler = () => {
-    console.log(mode + " Before" + colour);
-    setMode(!mode);
-    console.log(mode + " After" + colour);
+    setMode((mode) => !mode);
   };
 
   const setColourHandler = (color) => {
@@ -65,70 +63,6 @@ const HomeScreen = (props) => {
     dispatch(resetColor());
   };
 
-  let selectPane;
-
-  if (!mode && colour) {
-    selectPane = (
-      <View style={styles.selectionArea}>
-        <View style={{ ...styles.pickedColor, backgroundColor: chosenColor }}>
-          <Text style={{ color: "white" }}>{chosenColor.toUpperCase()}</Text>
-        </View>
-      </View>
-    );
-    return selectPane;
-  } else if (!mode && !colour) {
-    selectPane = (
-      <View style={styles.selectionArea}>
-        <ColorPicker
-          style={{ flex: 1 }}
-          onColorSelected={(color) => {
-            setColourHandler(color);
-          }}
-        />
-      </View>
-    );
-    return selectPane;
-  } else if (mode == false) {
-    selectPane = (
-      <View style={styles.selectionArea}>
-        <InputPicker />
-      </View>
-    );
-
-    return selectPane;
-  }
-
-  let selectedArea;
-  if (colour) {
-    selectedArea = (
-      <View style={styles.selectArea}>
-        <FlatList
-          numColumns={2}
-          data={Complements}
-          keyExtractor={(item) => item.title}
-          renderItem={({ item }) => (
-            <ColourTile
-              pressHandler={() => {
-                pressHandler(item.data);
-              }}
-              chosenColour={item.data}
-              schemeType={item.title}
-              schemeColor={item.data}
-              /*  mainColor={chosenColor}  */
-            />
-          )}
-        />
-      </View>
-    );
-    return selectedArea;
-  } else if (!colour) {
-    selectedArea = (
-      <View>
-        <Text>Please Select a colour</Text>
-      </View>
-    );
-    return selectedArea;
-  }
   const Complements = [
     {
       title: "Complementary Colour",
@@ -172,11 +106,70 @@ const HomeScreen = (props) => {
     },
   ];
 
+  let selectPane;
+
+  if (mode && colour) {
+    selectPane = (
+      <View style={styles.selectionArea}>
+        <View style={{ ...styles.pickedColor, backgroundColor: chosenColor }}>
+          <Text style={{ color: "white" }}>{chosenColor.toUpperCase()}</Text>
+        </View>
+      </View>
+    );
+  } else if (mode && !colour) {
+    selectPane = (
+      <View style={styles.selectionArea}>
+        <ColorPicker
+          style={{ flex: 1 }}
+          onColorSelected={(color) => {
+            setColourHandler(color);
+          }}
+        />
+      </View>
+    );
+  } else {
+    selectPane = (
+      <View style={styles.selectionArea}>
+        <InputPicker />
+      </View>
+    );
+  }
+
+  let selectedArea;
+  if (colour) {
+    selectedArea = (
+      <View style={styles.selectArea}>
+        <FlatList
+          numColumns={2}
+          data={Complements}
+          keyExtractor={(item) => item.title}
+          renderItem={({ item }) => (
+            <ColourTile
+              pressHandler={() => {
+                pressHandler(item.data);
+              }}
+              chosenColour={item.data}
+              schemeType={item.title}
+              schemeColor={item.data}
+              /*  mainColor={chosenColor}  */
+            />
+          )}
+        />
+      </View>
+    );
+  } else {
+    selectedArea = (
+      <View style={styles.defaultText}>
+        <Text style={{ fontSize: 30 }}>Please Select a colour</Text>
+      </View>
+    );
+  }
+
   return (
-    <ScrollView style={styles.screen}>
-      <View style={{ flex: 1 }}>{selectPane}</View>
-      <View style={{ flex: 1 }}>{selectedArea}</View>
-    </ScrollView>
+    <View style={styles.screen}>
+      {selectPane}
+      {selectedArea}
+    </View>
   );
 };
 
@@ -214,6 +207,11 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     justifyContent: "space-around",
     paddingHorizontal: 26,
+  },
+  defaultText: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
 
