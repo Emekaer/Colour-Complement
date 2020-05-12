@@ -13,13 +13,14 @@ import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import CustomHeaderButton from "../components/HeaderButton";
 import ColourTile from "../components/ColourTile";
 import InputPicker from "../components/InputPicker";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { setColor, resetColor } from "../store/actions/colors";
 
 const HomeScreen = (props) => {
+  const selectedColor = useSelector((state) => state.colors.selectedColor);
   const [colour, setColour] = useState(false);
-  const [chosenColor, setchosenColor] = useState();
+  const [chosenColor, setChosenColor] = useState(selectedColor);
   const [mode, setMode] = useState(true);
 
   const { navigation } = props;
@@ -43,7 +44,7 @@ const HomeScreen = (props) => {
 
   const pressHandler = (color) => {
     navigation.navigate("AdjustScreen", {
-      oldColor: chosenColor,
+      oldColor: selectedColor,
       color: color,
     });
   };
@@ -53,9 +54,9 @@ const HomeScreen = (props) => {
   };
 
   const setColourHandler = (color) => {
+    dispatch(setColor(color));
+    setChosenColor(selectedColor);
     setColour(true);
-    setchosenColor(color);
-    dispatch(setColor(chosenColor));
   };
 
   const resetHandler = () => {
@@ -66,43 +67,43 @@ const HomeScreen = (props) => {
   const Complements = [
     {
       title: "Complementary Colour",
-      data: complementaryColor(colour ? chosenColor : "#ff0000"),
+      data: complementaryColor(colour ? selectedColor : "#ff0000"),
     },
     {
       title: "Monochromatic 1",
-      data: monoch(colour ? chosenColor : "#ff0000").monoch1,
+      data: monoch(colour ? selectedColor : "#ff0000").monoch1,
     },
     {
       title: "Monochromatic 2",
-      data: monoch(colour ? chosenColor : "#ff0000").monoch2,
+      data: monoch(colour ? selectedColor : "#ff0000").monoch2,
     },
     {
       title: "Triad 1",
-      data: triad(colour ? chosenColor : "#ff0000").triad1,
+      data: triad(colour ? selectedColor : "#ff0000").triad1,
     },
     {
       title: "Triad 2",
-      data: triad(colour ? chosenColor : "#ff0000").triad2,
+      data: triad(colour ? selectedColor : "#ff0000").triad2,
     },
     {
       title: "Analogous 1",
-      data: analogous(colour ? chosenColor : "#ff0000").analog1,
+      data: analogous(colour ? selectedColor : "#ff0000").analog1,
     },
     {
       title: "Analogous 2",
-      data: analogous(colour ? chosenColor : "#ff0000").analog2,
+      data: analogous(colour ? selectedColor : "#ff0000").analog2,
     },
     {
       title: "Tetradic 1",
-      data: tetradic(colour ? chosenColor : "#ff0000").tetradic1,
+      data: tetradic(colour ? selectedColor : "#ff0000").tetradic1,
     },
     {
       title: "Tetradic 2",
-      data: tetradic(colour ? chosenColor : "#ff0000").tetradic2,
+      data: tetradic(colour ? selectedColor : "#ff0000").tetradic2,
     },
     {
       title: "Tetradic 3",
-      data: tetradic(colour ? chosenColor : "#ff0000").tetradic3,
+      data: tetradic(colour ? selectedColor : "#ff0000").tetradic3,
     },
   ];
 
@@ -111,8 +112,8 @@ const HomeScreen = (props) => {
   if (mode && colour) {
     selectPane = (
       <View style={styles.selectionArea}>
-        <View style={{ ...styles.pickedColor, backgroundColor: chosenColor }}>
-          <Text style={{ color: "white" }}>{chosenColor.toUpperCase()}</Text>
+        <View style={{ ...styles.pickedColor, backgroundColor: selectedColor }}>
+          <Text style={{ color: "white" }}>{selectedColor.toUpperCase()}</Text>
         </View>
       </View>
     );
@@ -121,6 +122,7 @@ const HomeScreen = (props) => {
       <View style={styles.selectionArea}>
         <ColorPicker
           style={{ flex: 1 }}
+          defaultColor={selectedColor}
           onColorSelected={(color) => {
             setColourHandler(color);
           }}
@@ -130,7 +132,7 @@ const HomeScreen = (props) => {
   } else {
     selectPane = (
       <View style={styles.selectionArea}>
-        <InputPicker />
+        <InputPicker submitHandler={(color) => setColourHandler(color)} />
       </View>
     );
   }
@@ -168,7 +170,7 @@ const HomeScreen = (props) => {
   return (
     <View style={styles.screen}>
       {selectPane}
-      {selectedArea}
+      <ScrollView>{selectedArea}</ScrollView>
     </View>
   );
 };
@@ -181,7 +183,7 @@ const styles = StyleSheet.create({
   selectionArea: {
     flexDirection: "row",
     width: "100%",
-    height: 200,
+    height: 175,
     padding: 10,
     marginBottom: 20,
     borderBottomColor: "#ccc",

@@ -1,24 +1,21 @@
 import { SET_COLOR, RESET_COLOR } from "../actions/colors";
 
 const initialState = {
-  selectedColor: ["#FF0000"],
+  selectedColor: "#FF0000",
 };
 
-const colorsReducer = (state = initialState, action) => {
+export default (state = initialState, action) => {
   switch (action.type) {
     case SET_COLOR:
       return {
-        ...state,
-        selectedColor: [action.color],
+        selectedColor: action.color,
       };
+
     case RESET_COLOR:
       return {
-        selectedColor: [],
+        selectedColor: "FF0000",
       };
     default:
-      
       return state;
   }
-};    
-
-export default colorsReducer;
+};
