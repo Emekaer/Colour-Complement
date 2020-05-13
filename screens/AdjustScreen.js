@@ -1,16 +1,36 @@
-import React, { useState } from "react";
+import React, { useState, useLayoutEffect } from "react";
 import { View, StyleSheet, Text } from "react-native";
 import { ColorPicker, fromHsv } from "react-native-color-picker";
-import { hexToRgb, rgbString } from "../functions/functions";
+import { rgbString } from "../functions/functions";
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
+
+import CustomHeaderButton from "../components/HeaderButton";
 
 const AdjustScreen = (props) => {
   const oldColor = props.route.params.oldColor;
   const setColor = props.route.params.color;
 
   const [changedColor, setChangedColor] = useState(oldColor);
+  const [newColor, setNewColor] = useState();
+
+  const { navigation } = props;
+
+  navigation.setOptions({
+    headerRight: () => (
+      <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+        <Item title="Reset" iconName={"md-save"} onPress={saveHandler} />
+      </HeaderButtons>
+    ),
+  });
 
   const colorChangeHandler = (color) => {
     setChangedColor(fromHsv(color));
+    setNewColor(fromHsv(color));
+  };
+
+
+  const saveHandler = () => {
+    navigation.navigate("HomeScreen", { newColor: newColor });
   };
 
   return (

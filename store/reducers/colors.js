@@ -1,4 +1,4 @@
-import { SET_COLOR, RESET_COLOR } from "../actions/colors";
+import { SET_COLOR } from "../actions/colors";
 
 const initialState = {
   selectedColor: "#FF0000",
@@ -10,12 +10,6 @@ export default (state = initialState, action) => {
       return {
         selectedColor: action.color,
       };
-
-    case RESET_COLOR:
-      return {
-        selectedColor: "FF0000",
-      };
-    default:
-      return state;
   }
+  return state;
 };

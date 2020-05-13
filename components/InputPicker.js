@@ -8,16 +8,20 @@ const InputPicker = (props) => {
   const selectedColor = useSelector(
     (state) => state.colors.selectedColor
   ).toUpperCase();
+  const selectedRGB = hexToRgb(selectedColor);
   const [chosenColor, setChosenColor] = useState(selectedColor);
-  const [chosenRGB, setChosenRGB] = useState({ r: 255, g: 0, b: 0 });
+  const [chosenRGB, setChosenRGB] = useState(selectedRGB);
 
   const dispatch = useDispatch();
-  const selectedRGB = hexToRgb(selectedColor);
-  console.log(chosenRGB);
 
-  const setColourHandler = () => {
+  const setColourHandlerHex = () => {
     dispatch(setColor(chosenColor));
     props.submitHandler(chosenColor);
+  };
+
+  const setColourHandlerRGB = () => {
+    dispatch(setColor(rgbToHex(chosenRGB.r,chosenRGB.g,chosenRGB.b)));
+    props.submitHandler(rgbToHex(chosenRGB.r,chosenRGB.g,chosenRGB.b));
   };
 
   return (
@@ -31,6 +35,11 @@ const InputPicker = (props) => {
           defaultValue={selectedColor}
           onChangeText={(value) => setChosenColor(value)}
         />
+        <Button
+          title="Set Value"
+          onPress={setColourHandlerHex}
+          color={"grey"}
+        />
       </View>
       <View style={styles.inputView}>
         <Text style={styles.label}>RGB Value:</Text>
@@ -43,7 +52,9 @@ const InputPicker = (props) => {
           keyboardType="number-pad"
           defaultValue={`${selectedRGB.r}`}
           value={chosenRGB.r}
-          onChangeText={(value) => setChosenRGB({r:value,g:chosenRGB.g,b:chosenRGB.b})}
+          onChangeText={(value) =>
+            setChosenRGB({ r: value, g: chosenRGB.g, b: chosenRGB.b })
+          }
         />
         <Text>G:</Text>
         <TextInput
@@ -54,7 +65,9 @@ const InputPicker = (props) => {
           keyboardType="number-pad"
           defaultValue={`${selectedRGB.g}`}
           value={chosenRGB.g}
-          onChangeText={(value) => setChosenRGB({r:chosenRGB.r,g:value,b:chosenRGB.b})}
+          onChangeText={(value) =>
+            setChosenRGB({ r: chosenRGB.r, g: value, b: chosenRGB.b })
+          }
         />
         <Text>B:</Text>
         <TextInput
@@ -65,10 +78,16 @@ const InputPicker = (props) => {
           keyboardType="number-pad"
           defaultValue={`${selectedRGB.b}`}
           value={chosenRGB.b}
-          onChangeText={(value) => setChosenRGB({r:chosenRGB.r,g:chosenRGB.g,b:value})}
+          onChangeText={(value) =>
+            setChosenRGB({ r: chosenRGB.r, g: chosenRGB.g, b: value })
+          }
+        />
+        <Button
+          title="Set Value"
+          onPress={setColourHandlerRGB}
+          color={"grey"}
         />
       </View>
-      <Button title="Set Value" onPress={setColourHandler} color={"grey"} />
     </View>
   );
 };

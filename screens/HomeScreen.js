@@ -1,4 +1,9 @@
-import React, { useState, useLayoutEffect } from "react";
+import React, {
+  useState,
+  useLayoutEffect,
+  useCallback,
+  useEffect,
+} from "react";
 import { ScrollView, View, StyleSheet, Text, FlatList } from "react-native";
 import {
   complementaryColor,
@@ -9,13 +14,14 @@ import {
 } from "../functions/functions";
 import { ColorPicker } from "react-native-color-picker";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import { useRoute } from "@react-navigation/native";
 
 import CustomHeaderButton from "../components/HeaderButton";
 import ColourTile from "../components/ColourTile";
 import InputPicker from "../components/InputPicker";
 import { useDispatch, useSelector } from "react-redux";
 
-import { setColor, resetColor } from "../store/actions/colors";
+import { setColor } from "../store/actions/colors";
 
 const HomeScreen = (props) => {
   const selectedColor = useSelector((state) => state.colors.selectedColor);
@@ -24,6 +30,7 @@ const HomeScreen = (props) => {
   const [mode, setMode] = useState(true);
 
   const { navigation } = props;
+  const { route } = props;
 
   const dispatch = useDispatch();
 
@@ -31,16 +38,23 @@ const HomeScreen = (props) => {
     navigation.setOptions({
       headerRight: () => (
         <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
-          <Item title="Reset" iconName={"md-refresh"} onPress={resetHandler} />
           <Item
             title="Mode change"
-            iconName={"md-copy"}
+            iconName={"md-swap"}
             onPress={modeChangeHandler}
           />
+          <Item title="Reset" iconName={"md-refresh"} onPress={resetHandler} />
         </HeaderButtons>
       ),
     });
-  }, [navigation, resetHandler]);
+    Complements.push({
+    title: "New Color",
+    data: newColor,
+  });
+  }, [navigation, resetHandler, route.params]);
+
+  const newColor = route.params?.newColor;
+  console.log(newColor);
 
   const pressHandler = (color) => {
     navigation.navigate("AdjustScreen", {
@@ -61,8 +75,9 @@ const HomeScreen = (props) => {
 
   const resetHandler = () => {
     setColour(false);
-    dispatch(resetColor());
   };
+
+  
 
   const Complements = [
     {
@@ -107,6 +122,7 @@ const HomeScreen = (props) => {
     },
   ];
 
+ 
   let selectPane;
 
   if (mode && colour) {
