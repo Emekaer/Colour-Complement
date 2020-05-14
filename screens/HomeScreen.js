@@ -14,7 +14,7 @@ import {
 } from "../functions/functions";
 import { ColorPicker } from "react-native-color-picker";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
-import { useRoute } from "@react-navigation/native";
+import Swipeable from "react-native-gesture-handler/Swipeable";
 
 import CustomHeaderButton from "../components/HeaderButton";
 import ColourTile from "../components/ColourTile";
@@ -48,13 +48,12 @@ const HomeScreen = (props) => {
       ),
     });
     Complements.push({
-    title: "New Color",
-    data: newColor,
-  });
+      title: "New Color",
+      data: newColor,
+    });
   }, [navigation, resetHandler, route.params]);
 
   const newColor = route.params?.newColor;
-  console.log(newColor);
 
   const pressHandler = (color) => {
     navigation.navigate("AdjustScreen", {
@@ -63,9 +62,11 @@ const HomeScreen = (props) => {
     });
   };
 
-  const modeChangeHandler = () => {
-    setMode((mode) => !mode);
-  };
+   const modeChangeHandler = useCallback(() => {
+   
+      setMode((mode) => !mode);
+    },[mode]
+  );
 
   const setColourHandler = (color) => {
     dispatch(setColor(color));
@@ -76,8 +77,6 @@ const HomeScreen = (props) => {
   const resetHandler = () => {
     setColour(false);
   };
-
-  
 
   const Complements = [
     {
@@ -122,7 +121,6 @@ const HomeScreen = (props) => {
     },
   ];
 
- 
   let selectPane;
 
   if (mode && colour) {
@@ -185,7 +183,12 @@ const HomeScreen = (props) => {
 
   return (
     <View style={styles.screen}>
-      {selectPane}
+      <Swipeable
+         renderLeftActions={console.log("Swipe left")}
+      renderRightActions={console.log("Swipe right")}
+      >
+        {selectPane}
+      </Swipeable>
       <ScrollView>{selectedArea}</ScrollView>
     </View>
   );
