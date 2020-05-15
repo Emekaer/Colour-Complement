@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { View, StyleSheet, Button, TextInput, Text } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { setColor } from "../store/actions/colors";
@@ -14,15 +14,15 @@ const InputPicker = (props) => {
 
   const dispatch = useDispatch();
 
-  const setColourHandlerHex = () => {
+  const setColourHandlerHex = useEffect(() => {
     dispatch(setColor(chosenColor));
     props.submitHandler(chosenColor);
-  };
+  },[chosenColor])
 
-  const setColourHandlerRGB = () => {
+  const setColourHandlerRGB = useEffect(() => {
     dispatch(setColor(rgbToHex(chosenRGB.r,chosenRGB.g,chosenRGB.b)));
     props.submitHandler(rgbToHex(chosenRGB.r,chosenRGB.g,chosenRGB.b));
-  };
+  },[chosenRGB])
 
   return (
     <View style={{ ...styles.screen, ...props.style }}>

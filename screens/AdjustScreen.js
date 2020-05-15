@@ -3,15 +3,18 @@ import { View, StyleSheet, Text } from "react-native";
 import { ColorPicker, fromHsv } from "react-native-color-picker";
 import { rgbString } from "../functions/functions";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
-
+import {addColor} from "../store/actions/colors"
+import {useDispatch} from "react-redux"
+ 
 import CustomHeaderButton from "../components/HeaderButton";
 
 const AdjustScreen = (props) => {
   const oldColor = props.route.params.oldColor;
   const setColor = props.route.params.color;
+  const dispatch = useDispatch()
 
   const [changedColor, setChangedColor] = useState(oldColor);
-  const [newColor, setNewColor] = useState();
+  const [newColor, setNewColor] = useState(setColor);
 
   const { navigation } = props;
 
@@ -30,7 +33,8 @@ const AdjustScreen = (props) => {
 
 
   const saveHandler = () => {
-    navigation.navigate("HomeScreen", { newColor: newColor });
+    navigation.navigate("HomeScreen");
+    dispatch(addColor({title: "New Color", color: newColor}))
   };
 
   return (

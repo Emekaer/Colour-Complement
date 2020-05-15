@@ -5,13 +5,6 @@ import React, {
   useEffect,
 } from "react";
 import { ScrollView, View, StyleSheet, Text, FlatList } from "react-native";
-import {
-  complementaryColor,
-  triad,
-  analogous,
-  tetradic,
-  monoch,
-} from "../functions/functions";
 import { ColorPicker } from "react-native-color-picker";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import Swipeable from "react-native-gesture-handler/Swipeable";
@@ -25,6 +18,7 @@ import { setColor } from "../store/actions/colors";
 
 const HomeScreen = (props) => {
   const selectedColor = useSelector((state) => state.colors.selectedColor);
+  const Complements =  useSelector((state) => state.colors.colorArray);
   const [colour, setColour] = useState(false);
   const [chosenColor, setChosenColor] = useState(selectedColor);
   const [mode, setMode] = useState(true);
@@ -47,13 +41,9 @@ const HomeScreen = (props) => {
         </HeaderButtons>
       ),
     });
-    Complements.push({
-      title: "New Color",
-      data: newColor,
-    });
   }, [navigation, resetHandler, route.params]);
 
-  const newColor = route.params?.newColor;
+
 
   const pressHandler = (color) => {
     navigation.navigate("AdjustScreen", {
@@ -77,49 +67,6 @@ const HomeScreen = (props) => {
   const resetHandler = () => {
     setColour(false);
   };
-
-  const Complements = [
-    {
-      title: "Complementary Colour",
-      data: complementaryColor(colour ? selectedColor : "#ff0000"),
-    },
-    {
-      title: "Monochromatic 1",
-      data: monoch(colour ? selectedColor : "#ff0000").monoch1,
-    },
-    {
-      title: "Monochromatic 2",
-      data: monoch(colour ? selectedColor : "#ff0000").monoch2,
-    },
-    {
-      title: "Triad 1",
-      data: triad(colour ? selectedColor : "#ff0000").triad1,
-    },
-    {
-      title: "Triad 2",
-      data: triad(colour ? selectedColor : "#ff0000").triad2,
-    },
-    {
-      title: "Analogous 1",
-      data: analogous(colour ? selectedColor : "#ff0000").analog1,
-    },
-    {
-      title: "Analogous 2",
-      data: analogous(colour ? selectedColor : "#ff0000").analog2,
-    },
-    {
-      title: "Tetradic 1",
-      data: tetradic(colour ? selectedColor : "#ff0000").tetradic1,
-    },
-    {
-      title: "Tetradic 2",
-      data: tetradic(colour ? selectedColor : "#ff0000").tetradic2,
-    },
-    {
-      title: "Tetradic 3",
-      data: tetradic(colour ? selectedColor : "#ff0000").tetradic3,
-    },
-  ];
 
   let selectPane;
 
