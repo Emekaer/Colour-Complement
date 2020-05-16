@@ -1,19 +1,46 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 
 const ColourTile = (props) => {
+  const [selected, setSelected] = useState(false);
+
+  const longPressHandler = () => {
+    setSelected((selected) => !selected);
+  };
+
   return (
-    <View >
-      <TouchableOpacity onPress={props.pressHandler}>
+    <TouchableOpacity
+      onPress={props.pressHandler}
+      onLongPress={longPressHandler}
+    >
+      <View
+        style={{ ...styles.component, backgroundColor: props.chosenColour }}
+      >
+        <Text style={{ ...styles.text /* color:props.mainColor */ }}>
+          Click to Adjust
+        </Text>
+        <Text style={{ ...styles.text /* color:props.mainColor */ }}>
+          {props.schemeType}
+        </Text>
+        <Text style={{ ...styles.text /* color:props.mainColor */ }}>
+          {props.schemeColor.toUpperCase()}
+        </Text>{selected ? (
         <View
-          style={{ ...styles.component, backgroundColor: props.chosenColour }}
+          style={{
+            marginBottom: 0,
+            alignItems: "center",
+            justifyContent: "flex-end",
+            width: "100%",
+            height: "15%",
+            backgroundColor: "#ccc",
+          }}
         >
-          <Text style={{...styles.text, /* color:props.mainColor */}}>Click to Adjust</Text>
-  <Text style={{...styles.text, /* color:props.mainColor */}}>{props.schemeType}</Text>
-  <Text style={{...styles.text, /* color:props.mainColor */}}>{props.schemeColor.toUpperCase()}</Text>
+          <Text>SELECTED</Text>
         </View>
-      </TouchableOpacity>
-    </View>
+      ) : null}
+      </View>
+      
+    </TouchableOpacity>
   );
 };
 
@@ -24,7 +51,7 @@ const styles = StyleSheet.create({
     height: 125,
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: 'black',
+    shadowColor: "black",
     shadowOpacity: 0.26,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 8,

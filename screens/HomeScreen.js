@@ -52,6 +52,7 @@ const HomeScreen = (props) => {
     });
   };
 
+
    const modeChangeHandler = () => {   
       setMode((mode) => !mode);
     }
@@ -99,8 +100,8 @@ const HomeScreen = (props) => {
   let selectedArea;
   if (colour) {
     selectedArea = (
-      <View style={styles.selectArea}>
-        <FlatList
+        <FlatList contentContainerStyle={styles.selectArea}
+        scrollEnabled={true}
           numColumns={2}
           data={Complements}
           keyExtractor={(item) => item.title}
@@ -116,8 +117,7 @@ const HomeScreen = (props) => {
             />
           )}
         />
-      </View>
-    );
+       );
   } else {
     selectedArea = (
       <View style={styles.defaultText}>
@@ -133,7 +133,8 @@ const HomeScreen = (props) => {
       >
         {selectPane}
       </Swipeable>
-      <ScrollView>{selectedArea}</ScrollView>
+      {selectedArea}
+
     </View>
   );
 };
@@ -167,10 +168,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   selectArea: {
-    flex: 1,
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-around",
     paddingHorizontal: 26,
   },
   defaultText: {

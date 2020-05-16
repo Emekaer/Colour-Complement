@@ -46,7 +46,7 @@ const InputPicker = (props) => {
           style={styles.input1}
           autoCapitalize="characters"
           defaultValue={selectedColor}
-          value={selectedColor}
+          value={chosenColor.toUpperCase()}
           onChangeText={(value) => setChosenColor(value)}
         />
         <Button
