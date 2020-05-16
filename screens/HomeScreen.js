@@ -52,11 +52,9 @@ const HomeScreen = (props) => {
     });
   };
 
-   const modeChangeHandler = useCallback(() => {
-   
+   const modeChangeHandler = () => {   
       setMode((mode) => !mode);
-    },[mode]
-  );
+    }
 
   const setColourHandler = (color) => {
     dispatch(setColor(color));
@@ -131,8 +129,7 @@ const HomeScreen = (props) => {
   return (
     <View style={styles.screen}>
       <Swipeable
-         renderLeftActions={console.log("Swipe left")}
-      renderRightActions={console.log("Swipe right")}
+      renderRightActions={()=>console.log(!mode)}
       >
         {selectPane}
       </Swipeable>

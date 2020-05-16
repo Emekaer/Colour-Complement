@@ -1,5 +1,5 @@
-import React, { useState,useEffect } from "react";
-import { View, StyleSheet, Button, TextInput, Text } from "react-native";
+import React, { useState, useEffect, useCallback } from "react";
+import { View, StyleSheet, Button, TextInput, Text, Alert } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { setColor } from "../store/actions/colors";
 import { rgbToHex, hexToRgb } from "../functions/functions";
@@ -14,15 +14,28 @@ const InputPicker = (props) => {
 
   const dispatch = useDispatch();
 
-  const setColourHandlerHex = useEffect(() => {
+  const setColourHandlerHex = () => {
     dispatch(setColor(chosenColor));
+    setChosenRGB(hexToRgb(chosenColor));
     props.submitHandler(chosenColor);
-  },[chosenColor])
+  };
 
-  const setColourHandlerRGB = useEffect(() => {
-    dispatch(setColor(rgbToHex(chosenRGB.r,chosenRGB.g,chosenRGB.b)));
-    props.submitHandler(rgbToHex(chosenRGB.r,chosenRGB.g,chosenRGB.b));
-  },[chosenRGB])
+  const setColourHandlerRGB = () => {
+    if (
+      +chosenRGB.r === "" ||
+      +chosenRGB.b === "" ||
+      +chosenRGB.g === "" ||
+      +chosenRGB.r > 255 ||
+      +chosenRGB.g > 255 ||
+      +chosenRGB.b > 255
+    ) {
+      Alert.alert("Incorrect input", "Please enter a number from 0-255");
+      return;
+    }
+    setChosenColor(rgbToHex(+chosenRGB.r, +chosenRGB.g, +chosenRGB.b));
+    dispatch(setColor(rgbToHex(+chosenRGB.r, +chosenRGB.g, +chosenRGB.b)));
+    props.submitHandler(rgbToHex(+chosenRGB.r, +chosenRGB.g, +chosenRGB.b));
+  };
 
   return (
     <View style={{ ...styles.screen, ...props.style }}>
@@ -33,6 +46,7 @@ const InputPicker = (props) => {
           style={styles.input1}
           autoCapitalize="characters"
           defaultValue={selectedColor}
+          value={selectedColor}
           onChangeText={(value) => setChosenColor(value)}
         />
         <Button
@@ -51,10 +65,10 @@ const InputPicker = (props) => {
           max={255}
           keyboardType="number-pad"
           defaultValue={`${selectedRGB.r}`}
-          value={chosenRGB.r}
-          onChangeText={(value) =>
-            setChosenRGB({ r: value, g: chosenRGB.g, b: chosenRGB.b })
-          }
+          value={`${chosenRGB.r}`}
+          onChangeText={(value) => {
+            setChosenRGB({ r: value, g: chosenRGB.g, b: chosenRGB.b });
+          }}
         />
         <Text>G:</Text>
         <TextInput
@@ -63,8 +77,8 @@ const InputPicker = (props) => {
           min={0}
           max={255}
           keyboardType="number-pad"
-          defaultValue={`${selectedRGB.g}`}
-          value={chosenRGB.g}
+          defaultValue={`${selectedRGB}`}
+          value={`${chosenRGB.g}`}
           onChangeText={(value) =>
             setChosenRGB({ r: chosenRGB.r, g: value, b: chosenRGB.b })
           }
@@ -76,8 +90,8 @@ const InputPicker = (props) => {
           min={0}
           max={255}
           keyboardType="number-pad"
-          defaultValue={`${selectedRGB.b}`}
-          value={chosenRGB.b}
+          defaultValue={`${selectedRGB}`}
+          value={`${chosenRGB.b}`}
           onChangeText={(value) =>
             setChosenRGB({ r: chosenRGB.r, g: chosenRGB.g, b: value })
           }

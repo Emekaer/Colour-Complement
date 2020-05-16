@@ -41,7 +41,7 @@ const AdjustScreen = (props) => {
     <View style={styles.screen}>
       <View style={styles.infoArea}>
         <Text style={styles.text}>HEX CODE</Text>
-        <Text style={styles.text}>{changedColor}</Text>
+        <Text style={styles.text}>{changedColor.toUpperCase()}</Text>
       </View>
       <View style={styles.infoArea}>
         <Text style={styles.text}>RGB</Text>

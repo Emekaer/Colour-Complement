@@ -3,14 +3,14 @@ import { Complements } from "../../functions/functionArray";
 
 
 const initialState = {
-  selectedColor: [],
+  selectedColor: "#FF0000",
   colorArray: [],
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
     case SET_COLOR:
-      return {...state,
+      return {
         selectedColor: action.color,
         colorArray: Complements(action.color)
       };
