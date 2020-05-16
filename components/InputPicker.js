@@ -22,9 +22,6 @@ const InputPicker = (props) => {
 
   const setColourHandlerRGB = () => {
     if (
-      +chosenRGB.r === "" ||
-      +chosenRGB.b === "" ||
-      +chosenRGB.g === "" ||
       +chosenRGB.r > 255 ||
       +chosenRGB.g > 255 ||
       +chosenRGB.b > 255

@@ -18,7 +18,7 @@ import { setColor } from "../store/actions/colors";
 
 const HomeScreen = (props) => {
   const selectedColor = useSelector((state) => state.colors.selectedColor);
-  const Complements =  useSelector((state) => state.colors.colorArray);
+  const Complements = useSelector((state) => state.colors.colorArray);
   const [colour, setColour] = useState(false);
   const [chosenColor, setChosenColor] = useState(selectedColor);
   const [mode, setMode] = useState(true);
@@ -32,18 +32,16 @@ const HomeScreen = (props) => {
     navigation.setOptions({
       headerRight: () => (
         <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
-          <Item
+       <Item
             title="Mode change"
             iconName={"md-swap"}
             onPress={modeChangeHandler}
-          />
+          /> 
           <Item title="Reset" iconName={"md-refresh"} onPress={resetHandler} />
         </HeaderButtons>
       ),
     });
   }, [navigation, resetHandler, route.params]);
-
-
 
   const pressHandler = (color) => {
     navigation.navigate("AdjustScreen", {
@@ -52,10 +50,17 @@ const HomeScreen = (props) => {
     });
   };
 
+  const rightAction = () => {
+    return (
+      <View style={styles.selectionArea}>
+        <InputPicker submitHandler={(color) => setColourHandler(color)} />
+      </View>
+    );
+  };
 
-   const modeChangeHandler = () => {   
-      setMode((mode) => !mode);
-    }
+  const modeChangeHandler = () => {
+    setMode((mode) => !mode)
+  };
 
   const setColourHandler = (color) => {
     dispatch(setColor(color));
@@ -100,24 +105,25 @@ const HomeScreen = (props) => {
   let selectedArea;
   if (colour) {
     selectedArea = (
-        <FlatList contentContainerStyle={styles.selectArea}
+      <FlatList
+        contentContainerStyle={styles.selectArea}
         scrollEnabled={true}
-          numColumns={2}
-          data={Complements}
-          keyExtractor={(item) => item.title}
-          renderItem={({ item }) => (
-            <ColourTile
-              pressHandler={() => {
-                pressHandler(item.data);
-              }}
-              chosenColour={item.data}
-              schemeType={item.title}
-              schemeColor={item.data}
-              /*  mainColor={chosenColor}  */
-            />
-          )}
-        />
-       );
+        numColumns={2}
+        data={Complements}
+        keyExtractor={(item) => item.title}
+        renderItem={({ item }) => (
+          <ColourTile
+            pressHandler={() => {
+              pressHandler(item.data);
+            }}
+            chosenColour={item.data}
+            schemeType={item.title}
+            schemeColor={item.data}
+            /*  mainColor={chosenColor}  */
+          />
+        )}
+      />
+    );
   } else {
     selectedArea = (
       <View style={styles.defaultText}>
@@ -128,13 +134,8 @@ const HomeScreen = (props) => {
 
   return (
     <View style={styles.screen}>
-      <Swipeable
-      renderRightActions={()=>console.log(!mode)}
-      >
-        {selectPane}
-      </Swipeable>
+      <Swipeable renderRightActions={rightAction}>{selectPane}</Swipeable>
       {selectedArea}
-
     </View>
   );
 };
