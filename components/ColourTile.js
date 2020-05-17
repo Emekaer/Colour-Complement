@@ -14,32 +14,29 @@ const ColourTile = (props) => {
       onLongPress={longPressHandler}
     >
       <View
-        style={{ ...styles.component, backgroundColor: props.chosenColour }}
+        style={{ ...styles.component, backgroundColor: props.chosenColour, 
+          shadowColor: props.chosenColour, }}
       >
-        <Text style={{ ...styles.text /* color:props.mainColor */ }}>
-          Click to Adjust
-        </Text>
-        <Text style={{ ...styles.text /* color:props.mainColor */ }}>
-          {props.schemeType}
-        </Text>
-        <Text style={{ ...styles.text /* color:props.mainColor */ }}>
+        <Text style={{ ...styles.text }}>Click to Adjust</Text>
+        <Text style={{ ...styles.text }}>{props.schemeType}</Text>
+        <Text style={{ ...styles.text }}>
           {props.schemeColor.toUpperCase()}
-        </Text>{selected ? (
-        <View
-          style={{
-            marginBottom: 0,
-            alignItems: "center",
-            justifyContent: "flex-end",
-            width: "100%",
-            height: "15%",
-            backgroundColor: "#ccc",
-          }}
-        >
-          <Text>SELECTED</Text>
-        </View>
-      ) : null}
+        </Text>
+        {selected ? (
+          <View
+            style={{
+              marginBottom: 0,
+              alignItems: "center",
+              justifyContent: "flex-end",
+              width: "100%",
+              height: "15%",
+              backgroundColor: "#ccc",
+            }}
+          >
+            <Text>SELECTED</Text>
+          </View>
+        ) : null}
       </View>
-      
     </TouchableOpacity>
   );
 };
@@ -51,7 +48,6 @@ const styles = StyleSheet.create({
     height: 125,
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: "black",
     shadowOpacity: 0.26,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 8,

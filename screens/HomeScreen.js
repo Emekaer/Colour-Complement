@@ -32,11 +32,11 @@ const HomeScreen = (props) => {
     navigation.setOptions({
       headerRight: () => (
         <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
-       <Item
+          <Item
             title="Mode change"
             iconName={"md-swap"}
             onPress={modeChangeHandler}
-          /> 
+          />
           <Item title="Reset" iconName={"md-refresh"} onPress={resetHandler} />
         </HeaderButtons>
       ),
@@ -59,7 +59,7 @@ const HomeScreen = (props) => {
   };
 
   const modeChangeHandler = () => {
-    setMode((mode) => !mode)
+    setMode((mode) => !mode);
   };
 
   const setColourHandler = (color) => {
@@ -77,7 +77,13 @@ const HomeScreen = (props) => {
   if (mode && colour) {
     selectPane = (
       <View style={styles.selectionArea}>
-        <View style={{ ...styles.pickedColor, backgroundColor: selectedColor }}>
+        <View
+          style={{
+            ...styles.pickedColor,
+            backgroundColor: selectedColor,
+            shadowColor: selectedColor,
+          }}
+        >
           <Text style={{ color: "white" }}>{selectedColor.toUpperCase()}</Text>
         </View>
       </View>
@@ -119,7 +125,6 @@ const HomeScreen = (props) => {
             chosenColour={item.data}
             schemeType={item.title}
             schemeColor={item.data}
-            /*  mainColor={chosenColor}  */
           />
         )}
       />
@@ -161,7 +166,6 @@ const styles = StyleSheet.create({
     height: "100%",
     alignItems: "center",
     justifyContent: "center",
-    shadowColor: "black",
     shadowOpacity: 0.26,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 8,

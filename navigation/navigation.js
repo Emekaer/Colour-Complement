@@ -7,7 +7,7 @@ import CustomHeaderButton from "../components/HeaderButton";
 import HomeScreen from "../screens/HomeScreen";
 import AdjustScreen from "../screens/AdjustScreen";
 import FavouriteScreen from "../screens/FavouriteScreen";
-import SavedScreen from "../screens/SavedScreen";
+import HistoryScreen from "../screens/HistoryScreen";
 import ProjectScreen from "../screens/ProjectScreen";
 
 const Stack = createStackNavigator();
@@ -60,15 +60,15 @@ const HomeStack = () => {
   );
 };
 
-const SavedStack = () => {
+const HistoryStack = () => {
   return (
     <Stack.Navigator screenOptions={defaultNavOps}>
       <Stack.Screen
-        name="SavedScreen"
-        component={SavedScreen}
+        name="HistoryScreen"
+        component={HistoryScreen}
         options={(navData) => {
           return {
-            headerTitle: "Saved",
+            headerTitle: "History",
             headerLeft: () => (
               <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
                 <Item
@@ -126,7 +126,7 @@ const AppDrawer = () => {
       }}
     >
       <Drawer.Screen name="Home" component={HomeStack} />
-      <Drawer.Screen name="Saved" component={SavedStack} />
+      <Drawer.Screen name="History" component={HistoryStack} />
       <Drawer.Screen name="Favourites" component={FavouriteStack} />
     </Drawer.Navigator>
   );

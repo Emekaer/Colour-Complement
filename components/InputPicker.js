@@ -46,7 +46,7 @@ const InputPicker = (props) => {
           value={chosenColor.toUpperCase()}
           onChangeText={(value) => setChosenColor(value)}
         />
-        <Button
+        <Button          
           title="Set Value"
           onPress={setColourHandlerHex}
           color={"grey"}
