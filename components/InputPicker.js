@@ -36,7 +36,7 @@ const InputPicker = (props) => {
 
   return (
     <View style={{ ...styles.screen, ...props.style }}>
-      <View style={{ ...styles.inputView }}>
+      <View style={ styles.inputView }>
         <Text>Hex Value :</Text>
         <TextInput
           maxLength={7}
@@ -109,9 +109,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   inputView: {
+    width: "100%",
     flexDirection: "row",
+    paddingHorizontal: 10,
     marginVertical: 15,
     alignItems: "center",
+    justifyContent:"space-between"
   },
   input: {
     borderColor: "#ccc",
@@ -119,16 +122,18 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     lineHeight: 32,
     width: 30,
+    textAlign:"center"
   },
   input1: {
     lineHeight: 32,
     borderColor: "#ccc",
     borderWidth: 1.5,
-    marginHorizontal: 15,
+    marginHorizontal:15,
+    textAlign:"center",
     width: 65,
   },
   label: {
-    paddingHorizontal: 12,
+    marginRight: 12,
   },
 });
 

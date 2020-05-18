@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 
 const HistoryScreen = (props) => {
   const history = useSelector((state) => state.colors.history);
+  
   return (
     <View style={styles.screen}>
       <FlatList
@@ -17,8 +18,9 @@ const HistoryScreen = (props) => {
         scrollEnabled={true}
         data={history}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
+        renderItem={({ item, index}) => (
           <View style={styles.selectionArea}>
+            <Text style={styles.text}>#{index +1}</Text>
             <View
               style={{
                 ...styles.pickedColor,
@@ -40,12 +42,14 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    paddingTop: 5,
+    
   },
   selectArea: {
     paddingHorizontal: 2,
   },
   pickedColor: {
-    width: "100%",
+    width: "95%",
     height: "100%",
     alignItems: "center",
     justifyContent: "center",
@@ -59,11 +63,18 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     width: "100%",
     height: 175,
-    padding: 10,
-    marginVertical: 5,
+    padding: 10, 
+    marginTop: 5,
+    marginRight: 5,
     alignItems: "center",
     justifyContent: "center",
+    borderBottomColor: "#ccc",
+    borderBottomWidth: 1.5,
   },
+  text: {
+    color: "#777777",
+    marginRight: 5,
+  }
 });
 
 export default HistoryScreen;
