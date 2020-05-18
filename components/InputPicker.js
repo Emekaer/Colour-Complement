@@ -3,6 +3,7 @@ import { View, StyleSheet, Button, TextInput, Text, Alert } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { setColor } from "../store/actions/colors";
 import { rgbToHex, hexToRgb } from "../functions/functions";
+import MyButton from "./MyButton";
 
 const InputPicker = (props) => {
   const selectedColor = useSelector(
@@ -21,11 +22,7 @@ const InputPicker = (props) => {
   };
 
   const setColourHandlerRGB = () => {
-    if (
-      +chosenRGB.r > 255 ||
-      +chosenRGB.g > 255 ||
-      +chosenRGB.b > 255
-    ) {
+    if (+chosenRGB.r > 255 || +chosenRGB.g > 255 || +chosenRGB.b > 255) {
       Alert.alert("Incorrect input", "Please enter a number from 0-255");
       return;
     }
@@ -36,7 +33,7 @@ const InputPicker = (props) => {
 
   return (
     <View style={{ ...styles.screen, ...props.style }}>
-      <View style={ styles.inputView }>
+      <View style={styles.inputView}>
         <Text>Hex Value :</Text>
         <TextInput
           maxLength={7}
@@ -46,11 +43,7 @@ const InputPicker = (props) => {
           value={chosenColor.toUpperCase()}
           onChangeText={(value) => setChosenColor(value)}
         />
-        <Button          
-          title="Set Value"
-          onPress={setColourHandlerHex}
-          color={"grey"}
-        />
+        <MyButton title="Set Value" onPress={setColourHandlerHex} />
       </View>
       <View style={styles.inputView}>
         <Text style={styles.label}>RGB Value:</Text>
@@ -93,11 +86,7 @@ const InputPicker = (props) => {
             setChosenRGB({ r: chosenRGB.r, g: chosenRGB.g, b: value })
           }
         />
-        <Button
-          title="Set Value"
-          onPress={setColourHandlerRGB}
-          color={"grey"}
-        />
+        <MyButton title="Set Value" onPress={setColourHandlerRGB} />
       </View>
     </View>
   );
@@ -114,22 +103,23 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginVertical: 15,
     alignItems: "center",
-    justifyContent:"space-between"
+    justifyContent: "space-between",
   },
   input: {
     borderColor: "#ccc",
     borderWidth: 1.5,
     marginHorizontal: 10,
-    lineHeight: 32,
+    lineHeight: 25,
     width: 30,
-    textAlign:"center"
+    textAlign: "center",
   },
   input1: {
     lineHeight: 32,
     borderColor: "#ccc",
     borderWidth: 1.5,
-    marginHorizontal:15,
-    textAlign:"center",
+    lineHeight: 25,
+    marginHorizontal: 15,
+    textAlign: "center",
     width: 65,
   },
   label: {

@@ -6,6 +6,7 @@ const ColourTile = (props) => {
 
   const longPressHandler = () => {
     setSelected((selected) => !selected);
+    props.selection()
   };
 
   return (
@@ -33,7 +34,7 @@ const ColourTile = (props) => {
               backgroundColor: "#ccc",
             }}
           >
-            <Text>SELECTED</Text>
+            <Text style={{ ...styles.text }}>SELECTED</Text>
           </View>
         ) : null}
       </View>

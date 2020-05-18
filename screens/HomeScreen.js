@@ -58,6 +58,13 @@ const HomeScreen = (props) => {
     );
   };
 
+  let selectedColors = []
+  
+  const selectionHandler =(color) =>{
+    selectedColors = [...selectedColors,color]
+    console.log(selectedColors)
+  }
+
   const modeChangeHandler = () => {
     setMode((mode) => !mode);
   };
@@ -122,6 +129,7 @@ const HomeScreen = (props) => {
             pressHandler={() => {
               pressHandler(item.data);
             }}
+            selection={()=>selectionHandler(item.data)}
             chosenColour={item.data}
             schemeType={item.title}
             schemeColor={item.data}
