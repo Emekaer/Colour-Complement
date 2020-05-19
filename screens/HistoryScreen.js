@@ -2,7 +2,6 @@ import React from "react";
 import {
   View,
   StyleSheet,
-  TouchableOpacity,
   FlatList,
   Text,
 } from "react-native";
@@ -83,3 +82,5 @@ const styles = StyleSheet.create({
 });
 
 export default HistoryScreen;
+
+

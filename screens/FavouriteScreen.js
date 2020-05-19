@@ -1,5 +1,7 @@
 import React from "react";
-import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
+import { View, StyleSheet, TouchableOpacity, FlatList, SectionList, Text } from "react-native";
+
+import ColourTile from "../components/ColourTile";
 import { useDispatch, useSelector } from "react-redux";
 
 const FavouriteScreen = (props) => {
@@ -7,8 +9,28 @@ const FavouriteScreen = (props) => {
   console.log(favourites);
   return (
     <View style={styles.screen}>
-   <Text>{favourites.title}</Text>
-      <Text>{favourites.colors}</Text>
+    <SectionList
+       /*  contentContainerStyle={styles.selectArea}
+        scrollEnabled={true}*/
+        numColumns={2} 
+        sections={favourites}
+        keyExtractor={(item,index) => item + index}
+        renderItem={({ item }) => 
+     (
+          <ColourTile
+           /*  pressHandler={() => {
+              pressHandler(item.data);
+            }}
+            selection={() => selectionHandler(item.data)} */
+            chosenColour={item}
+            schemeType={item}
+            schemeColor={item}
+          />
+        )}
+      renderSectionHeader={({ section: { title } }) => (
+        <Text style={styles.header}>{title}</Text>
+      )}
+      />
     </View>
   );
 };
@@ -16,8 +38,13 @@ const FavouriteScreen = (props) => {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    alignItems: "center",
+    alignItems: "flex-start",
     justifyContent: "center",
+  }, selectArea: {
+    paddingHorizontal: 26,
+  },header: {
+    fontSize: 32,
+    backgroundColor: "#fff"
   },
 });
 
