@@ -14,11 +14,12 @@ import ColourTile from "../components/ColourTile";
 import InputPicker from "../components/InputPicker";
 import { useDispatch, useSelector } from "react-redux";
 
-import { setColor } from "../store/actions/colors";
+import { setColor, addFavourite } from "../store/actions/colors";
 
 const HomeScreen = (props) => {
   const selectedColor = useSelector((state) => state.colors.selectedColor);
   const Complements = useSelector((state) => state.colors.colorArray);
+  const [selectedColors, setSelectedColors] = useState([]);
   const [colour, setColour] = useState(false);
   const [chosenColor, setChosenColor] = useState(selectedColor);
   const [mode, setMode] = useState(true);
@@ -36,6 +37,11 @@ const HomeScreen = (props) => {
             title="Mode change"
             iconName={"md-swap"}
             onPress={modeChangeHandler}
+          />
+          <Item
+            title="Favourite"
+            iconName={"md-star"}
+            onPress={favDispathcer}
           />
           <Item title="Reset" iconName={"md-refresh"} onPress={resetHandler} />
         </HeaderButtons>
@@ -58,12 +64,24 @@ const HomeScreen = (props) => {
     );
   };
 
-  let selectedColors = []
-  
-  const selectionHandler =(color) =>{
-    selectedColors = [...selectedColors,color]
-    console.log(selectedColors)
-  }
+  const selectionHandler = (color) => {
+    if (selectedColors.includes(color)) {
+      const position = selectedColors.indexOf(color);
+      setSelectedColors(
+        selectedColors.filter((color) => selectedColors[position] != color)
+      );
+      return;
+    } else {
+      setSelectedColors([...selectedColors, color]);
+      return console.log(selectedColors + "truth");
+    }
+  };
+
+  const favDispathcer = () => {
+    console.log(selectedColors);
+
+    dispatch(addFavourite({ title: selectedColor, colors: selectedColors }));
+  };
 
   const modeChangeHandler = () => {
     setMode((mode) => !mode);
@@ -77,6 +95,7 @@ const HomeScreen = (props) => {
 
   const resetHandler = () => {
     setColour(false);
+    setSelectedColors([]);
   };
 
   let selectPane;
@@ -129,7 +148,7 @@ const HomeScreen = (props) => {
             pressHandler={() => {
               pressHandler(item.data);
             }}
-            selection={()=>selectionHandler(item.data)}
+            selection={() => selectionHandler(item.data)}
             chosenColour={item.data}
             schemeType={item.title}
             schemeColor={item.data}

@@ -1,10 +1,11 @@
-import { SET_COLOR, ADD_COLOR } from "../actions/colors";
+import { SET_COLOR, ADD_COLOR, ADD_FAV } from "../actions/colors";
 import { Complements } from "../../functions/functionArray";
 
 const initialState = {
   selectedColor: "#FF0000",
   colorArray: [],
   history: [],
+  selectedFavs: [],
 };
 
 export default (state = initialState, action) => {
@@ -13,7 +14,10 @@ export default (state = initialState, action) => {
       return {
         selectedColor: action.color,
         colorArray: Complements(action.color),
-        history: state.history.concat({id: Date.now().toLocaleString(), data: action.color})
+        history: state.history.concat({
+          id: Date.now().toLocaleString(),
+          data: action.color,
+        }),
       };
     case ADD_COLOR:
       return {
@@ -22,6 +26,13 @@ export default (state = initialState, action) => {
           title: action.title,
           data: action.color,
         }),
+      };
+    case ADD_FAV:
+      console.log(action.selected.colors + "colors");
+      return {
+        ...state,
+        selectedFavs: action.selected
+        
       };
   }
   return state;
