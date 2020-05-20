@@ -73,14 +73,14 @@ const HomeScreen = (props) => {
       return;
     } else {
       setSelectedColors([...selectedColors, color]);
-      return console.log(selectedColors + "truth");
+      console.log(selectedColors + "truth");
     }
   };
 
   const favDispathcer = () => {
     console.log(selectedColors);
-
-    dispatch(addFavourite({ title: selectedColor, colors: selectedColors }));
+    const selcected = [{ title:chosenColor, data: selectedColors }]
+    dispatch(addFavourite(selected));
   };
 
   const modeChangeHandler = () => {

@@ -5,12 +5,7 @@ const initialState = {
   selectedColor: "#FF0000",
   colorArray: [],
   history: [],
-  selectedFavs: [
-    {
-      title: "#FF0000",
-      data: ["#00ff44", "#4992f0", "#ff0000", "#232394", "#00ff44", "#4992f0"],
-    },
-  ],
+  selectedFavs: [],
 };
 
 export default (state = initialState, action) => {
@@ -50,10 +45,13 @@ export default (state = initialState, action) => {
         }),
       };
     case ADD_FAV:
-      console.log(action.selected.colors + "colors");
+      const favs = [...state.selectedFavs]
+       favs.unshift(action.selected)
+               
+      console.log(action.selected + "colors");
       return {
         ...state,
-        selectedFavs: action.selected,
+        selectedFavs: favs,
       };
   }
   return state;
