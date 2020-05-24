@@ -73,15 +73,21 @@ const HomeScreen = (props) => {
       return;
     } else {
       setSelectedColors([...selectedColors, color]);
-      console.log(selectedColors + "truth");
+      console.log(selectedColors + " truth");
     }
   };
 
+  let selected
+
+ useEffect(()=>{
+    console.log(selectedColors + " plus " + chosenColor);
+    selected = { title: chosenColor, data: selectedColors }
+    console.log(`${selected.title} chosen` + ` ${selected.data}` + " for selected");
+  },[selectedColors, chosenColor])
+
   const favDispathcer = () => {
-    console.log(selectedColors);
-    const selcected = [{ title:chosenColor, data: selectedColors }]
-    dispatch(addFavourite(selected));
-  };
+     dispatch(addFavourite(selected));
+  }
 
   const modeChangeHandler = () => {
     setMode((mode) => !mode);
@@ -89,7 +95,7 @@ const HomeScreen = (props) => {
 
   const setColourHandler = (color) => {
     dispatch(setColor(color));
-    setChosenColor(selectedColor);
+    setChosenColor(color);
     setColour(true);
   };
 

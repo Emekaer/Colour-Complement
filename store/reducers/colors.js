@@ -45,14 +45,12 @@ export default (state = initialState, action) => {
         }),
       };
     case ADD_FAV:
-      const favs = [...state.selectedFavs]
-       favs.unshift(action.selected)
-               
-      console.log(action.selected + "colors");
-      return {
-        ...state,
-        selectedFavs: favs,
-      };
+      /* const favs = [state.selectedFavs];
+      console.log(action.selected + " Before reducer");
+      favs.concat(action.selected);
+
+      console.log(favs); */
+      return { ...state, selectedFavs: [action.selected] };
   }
   return state;
 };
