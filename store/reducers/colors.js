@@ -39,7 +39,7 @@ export default (state = initialState, action) => {
     case ADD_COLOR:
       return {
         ...state,
-        colorArray: state.colorArray.unshift({
+        colorArray: state.colorArray.concat({
           title: action.title,
           data: action.color,
         }),

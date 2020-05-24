@@ -8,6 +8,7 @@ import { ScrollView, View, StyleSheet, Text, FlatList } from "react-native";
 import { ColorPicker } from "react-native-color-picker";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import Swipeable from "react-native-gesture-handler/Swipeable";
+import { Button, Snackbar } from 'react-native-paper';
 
 import CustomHeaderButton from "../components/HeaderButton";
 import ColourTile from "../components/ColourTile";
@@ -23,6 +24,7 @@ const HomeScreen = (props) => {
   const [colour, setColour] = useState(false);
   const [chosenColor, setChosenColor] = useState(selectedColor);
   const [mode, setMode] = useState(true);
+  const [isVisible, setIsVisible] = useState(false)
 
   const { navigation } = props;
   const { route } = props;
@@ -73,20 +75,21 @@ const HomeScreen = (props) => {
       return;
     } else {
       setSelectedColors([...selectedColors, color]);
-      console.log(selectedColors + " truth");
+  
     }
   };
 
   let selected
 
  useEffect(()=>{
-    console.log(selectedColors + " plus " + chosenColor);
     selected = { title: chosenColor, data: selectedColors }
     console.log(`${selected.title} chosen` + ` ${selected.data}` + " for selected");
   },[selectedColors, chosenColor])
 
   const favDispathcer = () => {
+    setIsVisible(true)
      dispatch(addFavourite(selected));
+     
   }
 
   const modeChangeHandler = () => {
@@ -174,6 +177,20 @@ const HomeScreen = (props) => {
     <View style={styles.screen}>
       <Swipeable renderRightActions={rightAction}>{selectPane}</Swipeable>
       {selectedArea}
+      <Snackbar
+          visible={isVisible}
+          onDismiss={()=>setIsVisible(false)}
+          action={{
+            label: 'Undo',
+            onPress: () => {
+              // Do something
+            },
+          }}
+          duration= {3000}
+          style={{backgroundColor:"grey", borderRadius: 10 }}
+        >
+          Added to Favourites
+        </Snackbar>
     </View>
   );
 };
