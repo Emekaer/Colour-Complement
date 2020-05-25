@@ -8,9 +8,9 @@ const initialState = {
   favourites: [],
 };
 
-function updateObject(oldObject, newValues) {
+updateObject = (oldObject, newValues) => {
   return Object.assign({}, oldObject, newValues);
-}
+};
 
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -50,14 +50,12 @@ export default (state = initialState, action) => {
       return updateObject(state, { colorArray: updatedColorArray });
     }
     case ADD_FAV: {
-      const updatedFavs = state.favourites.concat({
-        title: action.title,
-        data: action.data,
-      });
-      console.log(action.title + "recieved" + action.data);
-
+      const updatedFavs = state.favourites.concat(action.storedData);
+      console.log(updatedFavs);
       return updateObject(state, { favourites: updatedFavs });
     }
   }
   return state;
 };
+
+

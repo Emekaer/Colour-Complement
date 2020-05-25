@@ -90,9 +90,6 @@ const HomeScreen = (props) => {
 
   useEffect(() => {
     selected = { title: chosenColor, data: selectedColors };
-    console.log(
-      `${selected.title} chosen` + ` ${selected.data}` + " for selected"
-    );
   }, [selectedColors, chosenColor]);
 
   const favDispathcer = () => {

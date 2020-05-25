@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -9,10 +9,26 @@ import {
 } from "react-native";
 
 import ColourTile from "../components/ColourTile";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { AsyncStorage } from "react-native";
+import { addFavourite } from "../store/actions/colors";
 
 const FavouriteScreen = (props) => {
-  const favourites = useSelector((state) => state.colors.favourites);
+  const [favourites, setFavourites] = useState([]);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const getFavourites = async () => {
+      const favourites = await AsyncStorage.getItem("favourites");
+
+      const transformedData = JSON.parse(favourites);
+
+      setFavourites(transformedData);
+    };
+
+    getFavourites();
+  }, [favourites]);
+
   return (
     <View style={styles.screen}>
       <FlatList
@@ -21,7 +37,9 @@ const FavouriteScreen = (props) => {
         renderItem={({ item }) => (
           <View>
             <View style={styles.title}>
-              <Text  style={{...styles.titleText,color: item.title }}>{item.title.toUpperCase()}</Text>
+              <Text style={{ ...styles.titleText, color: item.title }}>
+                {item.title.toUpperCase()}
+              </Text>
             </View>
             <FlatList
               data={item.data}
@@ -55,11 +73,11 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     justifyContent: "center",
   },
-   titleText: {
+  titleText: {
     fontSize: 32,
     textAlign: "center",
   },
- title: {
+  title: {
     width: "100%",
   },
 });
