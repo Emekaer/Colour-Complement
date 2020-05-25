@@ -49,7 +49,15 @@ const HomeScreen = (props) => {
         </HeaderButtons>
       ),
     });
-  }, [navigation, resetHandler, route.params, chosenColor,selectedColor, selectedColors, selected]);
+  }, [
+    navigation,
+    resetHandler,
+    route.params,
+    chosenColor,
+    selectedColor,
+    selectedColors,
+    selected,
+  ]);
 
   const pressHandler = (color) => {
     navigation.navigate("AdjustScreen", {
@@ -66,15 +74,15 @@ const HomeScreen = (props) => {
     );
   };
 
-  const selectionHandler = (color) => {
-    if (selectedColors.includes(color)) {
-      const position = selectedColors.indexOf(color);
+  const selectionHandler = (value) => {
+    if (selectedColors.some((hue) => hue.color == value)) {
+      const repeatedColor = selectedColors.find((hue) => hue.color === value);
       setSelectedColors(
-        selectedColors.filter((color) => selectedColors[position] != color)
+        selectedColors.filter((value) => repeatedColor != value)
       );
       return;
     } else {
-      setSelectedColors([...selectedColors, color]);
+      setSelectedColors([...selectedColors, { color: value }]);
     }
   };
 
@@ -88,7 +96,6 @@ const HomeScreen = (props) => {
   }, [selectedColors, chosenColor]);
 
   const favDispathcer = () => {
-    
     setIsVisible(true);
     console.log(
       `${selected.title} chosen` +

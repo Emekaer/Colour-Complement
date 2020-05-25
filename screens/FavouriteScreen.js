@@ -13,27 +13,33 @@ import { useSelector } from "react-redux";
 
 const FavouriteScreen = (props) => {
   const favourites = useSelector((state) => state.colors.favourites);
-  console.log(favourites);
   return (
     <View style={styles.screen}>
-      <SectionList
-        sections={favourites}
+      <FlatList
+        data={favourites}
         keyExtractor={(item, index) => item + index}
-        renderSectionHeader={({ section: { title } }) => (
-          <View style={styles.header1}>
-            <Text style={styles.header}>{title}</Text>
-          </View>
-        )}
         renderItem={({ item }) => (
-          <View style={styles.item}>
-            <ColourTile
-              /*  pressHandler={() => {
-            pressHandler(item.data);
-          }}
-          selection={() => selectionHandler(item.data)} */
-              chosenColour={item}
-              schemeType={item}
-              schemeColor={item}
+          <View>
+            <View style={styles.title}>
+              <Text  style={{...styles.titleText,color: item.title }}>{item.title.toUpperCase()}</Text>
+            </View>
+            <FlatList
+              data={item.data}
+              horizontal
+              keyExtractor={(item, index) => item + index}
+              renderItem={({ item, index }) => (
+                <View style={styles.item}>
+                  <ColourTile
+                    /*  pressHandler={() => {
+                pressHandler(item.data);
+              }}
+              selection={() => selectionHandler(item.data)} */
+                    chosenColour={item.color}
+                    schemeType={item.color}
+                    schemeColor={item.color}
+                  />
+                </View>
+              )}
             />
           </View>
         )}
@@ -49,15 +55,12 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     justifyContent: "center",
   },
-  item: {},
-  header: {
+   titleText: {
     fontSize: 32,
-    color: "white",
     textAlign: "center",
   },
-  header1: {
+ title: {
     width: "100%",
-    backgroundColor: "grey",
   },
 });
 
