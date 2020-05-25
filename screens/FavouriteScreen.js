@@ -1,35 +1,42 @@
 import React from "react";
-import { View, StyleSheet, TouchableOpacity, FlatList, SectionList, Text } from "react-native";
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  FlatList,
+  SectionList,
+  Text,
+} from "react-native";
 
 import ColourTile from "../components/ColourTile";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 const FavouriteScreen = (props) => {
-  const favourites = useSelector((state) => state.colors.selectedFavs);
+  const favourites = useSelector((state) => state.colors.favourites);
   console.log(favourites);
   return (
     <View style={styles.screen}>
-    <SectionList
-       /*  contentContainerStyle={styles.selectArea}
-        scrollEnabled={true}*/
-        numColumns={2} 
+      <SectionList
         sections={favourites}
-        keyExtractor={(item,index) => item + index}
-        renderItem={({ item }) => 
-     (
-          <ColourTile
-           /*  pressHandler={() => {
-              pressHandler(item.data);
-            }}
-            selection={() => selectionHandler(item.data)} */
-            chosenColour={item}
-            schemeType={item}
-            schemeColor={item}
-          />
+        keyExtractor={(item, index) => item + index}
+        renderSectionHeader={({ section: { title } }) => (
+          <View style={styles.header1}>
+            <Text style={styles.header}>{title}</Text>
+          </View>
         )}
-      renderSectionHeader={({ section: { title } }) => (
-        <Text style={styles.header}>{title}</Text>
-      )}
+        renderItem={({ item }) => (
+          <View style={styles.item}>
+            <ColourTile
+              /*  pressHandler={() => {
+            pressHandler(item.data);
+          }}
+          selection={() => selectionHandler(item.data)} */
+              chosenColour={item}
+              schemeType={item}
+              schemeColor={item}
+            />
+          </View>
+        )}
       />
     </View>
   );
@@ -38,13 +45,19 @@ const FavouriteScreen = (props) => {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
+    flexDirection: "row",
     alignItems: "flex-start",
     justifyContent: "center",
-  }, selectArea: {
-    paddingHorizontal: 26,
-  },header: {
+  },
+  item: {},
+  header: {
     fontSize: 32,
-    backgroundColor: "#fff"
+    color: "white",
+    textAlign: "center",
+  },
+  header1: {
+    width: "100%",
+    backgroundColor: "grey",
   },
 });
 

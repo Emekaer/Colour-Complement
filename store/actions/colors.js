@@ -10,6 +10,6 @@ export const addColor = ({ title, color }) => {
   return { type: ADD_COLOR, title: title, color: color };
 };
 
-export const addFavourite = (selected)  => {
-  return { type: ADD_FAV, selected: selected };
+export const addFavourite = ({ title, data }) => {
+  return { type: ADD_FAV, title: title, data: data };
 };

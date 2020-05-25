@@ -8,7 +8,7 @@ import { ScrollView, View, StyleSheet, Text, FlatList } from "react-native";
 import { ColorPicker } from "react-native-color-picker";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import Swipeable from "react-native-gesture-handler/Swipeable";
-import { Button, Snackbar } from 'react-native-paper';
+import { Snackbar } from "react-native-paper";
 
 import CustomHeaderButton from "../components/HeaderButton";
 import ColourTile from "../components/ColourTile";
@@ -24,7 +24,7 @@ const HomeScreen = (props) => {
   const [colour, setColour] = useState(false);
   const [chosenColor, setChosenColor] = useState(selectedColor);
   const [mode, setMode] = useState(true);
-  const [isVisible, setIsVisible] = useState(false)
+  const [isVisible, setIsVisible] = useState(false);
 
   const { navigation } = props;
   const { route } = props;
@@ -49,7 +49,7 @@ const HomeScreen = (props) => {
         </HeaderButtons>
       ),
     });
-  }, [navigation, resetHandler, route.params]);
+  }, [navigation, resetHandler, route.params, chosenColor,selectedColor, selectedColors, selected]);
 
   const pressHandler = (color) => {
     navigation.navigate("AdjustScreen", {
@@ -75,22 +75,28 @@ const HomeScreen = (props) => {
       return;
     } else {
       setSelectedColors([...selectedColors, color]);
-  
     }
   };
 
-  let selected
+  let selected;
 
- useEffect(()=>{
-    selected = { title: chosenColor, data: selectedColors }
-    console.log(`${selected.title} chosen` + ` ${selected.data}` + " for selected");
-  },[selectedColors, chosenColor])
+  useEffect(() => {
+    selected = { title: chosenColor, data: selectedColors };
+    console.log(
+      `${selected.title} chosen` + ` ${selected.data}` + " for selected"
+    );
+  }, [selectedColors, chosenColor]);
 
   const favDispathcer = () => {
-    setIsVisible(true)
-     dispatch(addFavourite(selected));
-     
-  }
+    
+    setIsVisible(true);
+    console.log(
+      `${selected.title} chosen` +
+        ` ${selected.data}` +
+        " for selected ia sentttttt"
+    );
+    dispatch(addFavourite({ title: selected.title, data: selected.data }));
+  };
 
   const modeChangeHandler = () => {
     setMode((mode) => !mode);
@@ -178,19 +184,19 @@ const HomeScreen = (props) => {
       <Swipeable renderRightActions={rightAction}>{selectPane}</Swipeable>
       {selectedArea}
       <Snackbar
-          visible={isVisible}
-          onDismiss={()=>setIsVisible(false)}
-          action={{
-            label: 'Undo',
-            onPress: () => {
-              // Do something
-            },
-          }}
-          duration= {3000}
-          style={{backgroundColor:"grey", borderRadius: 10 }}
-        >
-          Added to Favourites
-        </Snackbar>
+        visible={isVisible}
+        onDismiss={() => setIsVisible(false)}
+        action={{
+          label: "Undo",
+          onPress: () => {
+            // Do something
+          },
+        }}
+        duration={3000}
+        style={{ backgroundColor: "grey", borderRadius: 10 }}
+      >
+        Added to Favourites
+      </Snackbar>
     </View>
   );
 };
@@ -205,7 +211,6 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 175,
     padding: 10,
-    marginBottom: 20,
     borderBottomColor: "#ccc",
     borderBottomWidth: 1,
     alignItems: "center",
@@ -223,7 +228,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   selectArea: {
-    paddingHorizontal: 26,
+    alignItems: "center",
+    justifyContent: "space-around",
   },
   defaultText: {
     flex: 1,

@@ -5,12 +5,16 @@ const initialState = {
   selectedColor: "#FF0000",
   colorArray: [],
   history: [],
-  selectedFavs: [],
+  favourites: [],
 };
+
+function updateObject(oldObject, newValues) {
+  return Object.assign({}, oldObject, newValues);
+}
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case SET_COLOR:
+    case SET_COLOR: {
       const updatedHistory = [...state.history];
       if (updatedHistory.length > 9) {
         updatedHistory.splice(9, 1);
@@ -20,6 +24,7 @@ export default (state = initialState, action) => {
         });
 
         return {
+          ...state,
           selectedColor: action.color,
           colorArray: Complements(action.color),
           history: updatedHistory,
@@ -30,27 +35,29 @@ export default (state = initialState, action) => {
           data: action.color,
         });
         return {
+          ...state,
           selectedColor: action.color,
           colorArray: Complements(action.color),
           history: updatedHistory,
         };
       }
+    }
+    case ADD_COLOR: {
+      const updatedColorArray = state.colorArray.concat({
+        title: action.title,
+        data: action.color,
+      });
+      return updateObject(state, { colorArray: updatedColorArray });
+    }
+    case ADD_FAV: {
+      const updatedFavs = state.favourites.concat({
+        title: action.title,
+        data: action.data,
+      });
+      console.log(action.title + "recieved" + action.data);
 
-    case ADD_COLOR:
-      return {
-        ...state,
-        colorArray: state.colorArray.concat({
-          title: action.title,
-          data: action.color,
-        }),
-      };
-    case ADD_FAV:
-      /* const favs = [state.selectedFavs];
-      console.log(action.selected + " Before reducer");
-      favs.concat(action.selected);
-
-      console.log(favs); */
-      return { ...state, selectedFavs: [action.selected] };
+      return updateObject(state, { favourites: updatedFavs });
+    }
   }
   return state;
 };
