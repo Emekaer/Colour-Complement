@@ -1,4 +1,4 @@
-import { SET_COLOR, ADD_COLOR, ADD_FAV } from "../actions/colors";
+import { SET_COLOR, ADD_COLOR, ADD_FAV, DELETE_FAV } from "../actions/colors";
 import { Complements } from "../../functions/functionArray";
 
 const initialState = {
@@ -54,8 +54,10 @@ export default (state = initialState, action) => {
       console.log(updatedFavs);
       return updateObject(state, { favourites: updatedFavs });
     }
+    case DELETE_FAV: {
+      const updatedFavs = state.favourites.concat(action.storedData);
+      return updateObject(state, { favourites: updatedFavs });
+    }
   }
   return state;
 };
-
-

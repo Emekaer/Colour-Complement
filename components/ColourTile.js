@@ -60,6 +60,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "white",
     textAlign: "center",
+    textShadowColor:"#666666",
+    textShadowRadius: 1,
   },
 });
 

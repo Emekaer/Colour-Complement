@@ -27,7 +27,7 @@ const HistoryScreen = (props) => {
                 shadowColor: item.data,
               }}
             >
-              <Text style={styles.colorText}>{item.data.toUpperCase()}</Text>
+              <Text selectable={true} style={styles.colorText}>{item.data.toUpperCase()}</Text>
             </View>
           </View>
         )}
@@ -78,6 +78,8 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontSize: 16,
     letterSpacing: 1.5,
+    textShadowColor: "#666666",
+    textShadowRadius: 1,
   },
 });
 

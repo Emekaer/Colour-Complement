@@ -7,7 +7,6 @@ import React, {
 import { ScrollView, View, StyleSheet, Text, FlatList } from "react-native";
 import { ColorPicker } from "react-native-color-picker";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
-import Swipeable from "react-native-gesture-handler/Swipeable";
 import { Snackbar } from "react-native-paper";
 
 import CustomHeaderButton from "../components/HeaderButton";
@@ -129,7 +128,9 @@ const HomeScreen = (props) => {
             shadowColor: selectedColor,
           }}
         >
-          <Text style={{ color: "white" }}>{selectedColor.toUpperCase()}</Text>
+          <Text selectable={true} style={styles.selectedText}>
+            {selectedColor.toUpperCase()}
+          </Text>
         </View>
       </View>
     );
@@ -185,7 +186,7 @@ const HomeScreen = (props) => {
 
   return (
     <View style={styles.screen}>
-      <Swipeable renderRightActions={rightAction}>{selectPane}</Swipeable>
+      {selectPane}
       {selectedArea}
       <Snackbar
         visible={isVisible}
@@ -239,6 +240,14 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+  },
+  selectedText: {
+    color: "white",
+    fontWeight: "600",
+    fontSize: 16,
+    letterSpacing: 1.5,
+    textShadowColor: "#666666",
+    textShadowRadius: 1,
   },
 });
 

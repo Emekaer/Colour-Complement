@@ -8,8 +8,8 @@ const CustomHeaderButton = (props) => {
       {...props}
       IconComponent={Ionicons}
       iconSize={23}
-      color="white"
-      buttonStyle={{marginTop:20}}
+      color={"white"}
+      buttonStyle={{ marginTop: 20 }}
     />
   );
 };

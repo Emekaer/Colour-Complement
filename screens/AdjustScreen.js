@@ -41,11 +41,11 @@ const AdjustScreen = (props) => {
     <View style={styles.screen}>
       <View style={styles.infoArea}>
         <Text style={styles.text}>HEX CODE</Text>
-        <Text style={styles.text}>{changedColor.toUpperCase()}</Text>
+        <Text selectable={true} style={styles.text}>{changedColor.toUpperCase()}</Text>
       </View>
       <View style={styles.infoArea}>
         <Text style={styles.text}>RGB</Text>
-        <Text style={styles.text}>{rgbString(changedColor)}</Text>
+        <Text selectable={true} style={styles.text}>{rgbString(changedColor)}</Text>
       </View>
 
       <ColorPicker
