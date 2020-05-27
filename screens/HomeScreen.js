@@ -1,14 +1,8 @@
 import React, { useState, useLayoutEffect, useEffect } from "react";
 import { View, StyleSheet, Text, FlatList } from "react-native";
 import { ColorPicker } from "react-native-color-picker";
-import {
-  HeaderButtons,
-  Item,
-  OverflowMenu,
-  HiddenItem,
-} from "react-navigation-header-buttons";
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import { Snackbar } from "react-native-paper";
-import { Ionicons } from "@expo/vector-icons";
 
 import CustomHeaderButton from "../components/HeaderButton";
 import ColourTile from "../components/ColourTile";
@@ -26,10 +20,19 @@ const HomeScreen = (props) => {
   const [mode, setMode] = useState(true);
   const [isVisible, setIsVisible] = useState(false);
 
+  const dispatch = useDispatch();
+
   const { navigation } = props;
   const { route } = props;
 
-  const dispatch = useDispatch();
+  const historyColor = route.params?.historyColor;
+
+  useEffect(() => {
+    if (historyColor !== undefined) {
+      setChosenColor(historyColor)
+      setColour(true);
+    }
+  }, [route]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -104,7 +107,7 @@ const HomeScreen = (props) => {
 
   const setColourHandler = (color) => {
     dispatch(setColor(color));
-    dispatch(addHistory(color)); 
+    dispatch(addHistory(color));
     setChosenColor(color);
     setColour(true);
   };
@@ -122,8 +125,8 @@ const HomeScreen = (props) => {
         <View
           style={{
             ...styles.pickedColor,
-            backgroundColor: selectedColor,
-            shadowColor: selectedColor,
+            backgroundColor: chosenColor,
+            shadowColor: chosenColor,
           }}
         >
           <Text selectable={true} style={styles.selectedText}>

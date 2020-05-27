@@ -1,14 +1,19 @@
-import React,{useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   StyleSheet,
   FlatList,
   Text,
+  TouchableOpacity,
 } from "react-native";
 import { AsyncStorage } from "react-native";
+import { useDispatch } from "react-redux";
+
+import { setColor } from "../store/actions/colors";
 
 const HistoryScreen = (props) => {
   const [history, setHistory] = useState([]);
+  const dispatch = useDispatch();
   useEffect(() => {
     const gethistory = async () => {
       const history = await AsyncStorage.getItem("history");
@@ -31,15 +36,23 @@ const HistoryScreen = (props) => {
         renderItem={({ item, index }) => (
           <View style={styles.selectionArea}>
             <Text style={styles.text}>#{index + 1}</Text>
-            <View
+            <TouchableOpacity
               style={{
                 ...styles.pickedColor,
                 backgroundColor: item.data,
                 shadowColor: item.data,
               }}
+              onPress={() => {
+                props.navigation.navigate("HomeScreen",{historyColor : item.data});
+                dispatch(setColor(item.data));
+              }}
             >
-              <Text selectable={true} style={styles.colorText}>{item.data.toUpperCase()}</Text>
-            </View>
+              <View>
+                <Text selectable={true} style={styles.colorText}>
+                  {item.data.toUpperCase()}
+                </Text>
+              </View>
+            </TouchableOpacity>
           </View>
         )}
       />
@@ -96,5 +109,3 @@ const styles = StyleSheet.create({
 });
 
 export default HistoryScreen;
-
-

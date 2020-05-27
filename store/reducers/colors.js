@@ -27,16 +27,22 @@ export default (state = initialState, action) => {
         colorArray: Complements(action.color),
       };
     }
-    case SET_COLOR: {
+    case ADD_HISTORY: {
       const updatedHistory = state.history.concat(action.storedData);
       return {
         ...state,
         history: updatedHistory,
       };
     }
+    case ADD_COLOR: {
+      const updatedColorArray = state.colorArray.concat({
+        title: action.title,
+        data: action.color,
+      });
+      return updateObject(state, { colorArray: updatedColorArray });
+    }
     case ADD_FAV: {
       const updatedFavs = state.favourites.concat(action.storedData);
-      console.log(updatedFavs);
       return updateObject(state, { favourites: updatedFavs });
     }
     case DELETE_FAV: {

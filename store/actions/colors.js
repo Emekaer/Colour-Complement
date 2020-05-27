@@ -17,7 +17,7 @@ export const addHistory = (title) => {
   return async (dispatch) => {
     let history = await AsyncStorage.getItem("history");
 
-    if (history === null) {
+    if (history == null) {
       await AsyncStorage.setItem("history", JSON.stringify([]));
       history = await AsyncStorage.getItem("history");
     }
