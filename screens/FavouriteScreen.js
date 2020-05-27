@@ -38,13 +38,23 @@ const FavouriteScreen = (props) => {
           <View>
             <View style={styles.titleContainer}>
               <View style={styles.title}>
-                <Text
-                  selectable={true}
-                  style={{ ...styles.titleText, color: item.title }}
+                <TouchableOpacity
+                  onPress={() => {
+                    props.navigation.navigate("ColourDetailScreen", {
+                      mainColor: item.title,
+                      data: item.data,
+                    });
+                  }}
                 >
-                  {item.title.toUpperCase()}
-                </Text>
+                  <Text
+                    selectable={true}
+                    style={{ ...styles.titleText, color: item.title }}
+                  >
+                    {item.title.toUpperCase()}
+                  </Text>
+                </TouchableOpacity>
               </View>
+
               <TouchableOpacity
                 onPress={() => {
                   dispatch(

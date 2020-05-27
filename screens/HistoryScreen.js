@@ -47,7 +47,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 2,
   },
   pickedColor: {
-    width: "95%",
+    marginRight: 10,
+    width: "90%",
     height: "100%",
     alignItems: "center",
     justifyContent: "center",
@@ -65,7 +66,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginRight: 5,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-between",
     borderBottomColor: "#ccc",
     borderBottomWidth: 1.5,
   },

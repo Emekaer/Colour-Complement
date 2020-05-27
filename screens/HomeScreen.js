@@ -6,8 +6,14 @@ import React, {
 } from "react";
 import { ScrollView, View, StyleSheet, Text, FlatList } from "react-native";
 import { ColorPicker } from "react-native-color-picker";
-import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import {
+  HeaderButtons,
+  Item,
+  OverflowMenu,
+  HiddenItem,
+} from "react-navigation-header-buttons";
 import { Snackbar } from "react-native-paper";
+import { Ionicons } from "@expo/vector-icons";
 
 import CustomHeaderButton from "../components/HeaderButton";
 import ColourTile from "../components/ColourTile";
@@ -42,6 +48,8 @@ const HomeScreen = (props) => {
           <Item
             title="Favourite"
             iconName={"md-star"}
+            disabled={colour ? false : true}
+            colour={colour ? "white" : "#aaa"}
             onPress={favDispathcer}
           />
           <Item title="Reset" iconName={"md-refresh"} onPress={resetHandler} />
@@ -65,14 +73,6 @@ const HomeScreen = (props) => {
     });
   };
 
-  const rightAction = () => {
-    return (
-      <View style={styles.selectionArea}>
-        <InputPicker submitHandler={(color) => setColourHandler(color)} />
-      </View>
-    );
-  };
-
   const selectionHandler = (value) => {
     if (selectedColors.some((hue) => hue.color == value)) {
       const repeatedColor = selectedColors.find((hue) => hue.color === value);
@@ -93,11 +93,7 @@ const HomeScreen = (props) => {
 
   const favDispathcer = () => {
     setIsVisible(true);
-    console.log(
-      `${selected.title} chosen` +
-        ` ${selected.data}` +
-        " for selected ia sentttttt"
-    );
+    resetHandler();
     dispatch(addFavourite({ title: selected.title, data: selected.data }));
   };
 

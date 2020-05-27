@@ -9,6 +9,7 @@ import AdjustScreen from "../screens/AdjustScreen";
 import FavouriteScreen from "../screens/FavouriteScreen";
 import HistoryScreen from "../screens/HistoryScreen";
 import ProjectScreen from "../screens/ProjectScreen";
+import ColourDetailScreen from "../screens/ColourDetailScreen";
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -111,6 +112,33 @@ const FavouriteStack = () => {
           };
         }}
       />
+      <Stack.Screen name="ColourDetailScreen" component={ColourDetailScreen} 
+      options={(navData) => {
+        return {
+          headerTitle: "Colour Details",
+          headerLeft: () => (
+            <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+              <Item
+                title="back"
+                iconName={"md-arrow-back"}
+                onPress={() => {
+                  navData.navigation.goBack();
+                }}
+              />
+            </HeaderButtons>
+          ),headerRight: () => (
+            <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+              <Item
+                title="back"
+                iconName={"md-share"}
+                onPress={() => {
+                  console.log("Share")
+                }}
+              />
+            </HeaderButtons>
+          )
+        };
+      }}/>
     </Stack.Navigator>
   );
 };

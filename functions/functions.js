@@ -21,7 +21,7 @@ export const rgbToHex = (r, g, b) => {
   return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
 };
 
-//Converts RGB Object to RGB string
+//Converts Hex String to RGB string
 export const rgbString = (value) => {
   return `(${hexToRgb(value).r},${hexToRgb(value).g},${hexToRgb(value).b})`;
 };
