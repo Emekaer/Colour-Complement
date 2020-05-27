@@ -10,7 +10,10 @@ const ColourBar = (props) => {
         shadowColor: props.chosenColour,
       }}
     >
-    <Text style={styles.text}>{props.chosenColour.toUpperCase()}</Text></View>
+      <Text selectable={true} style={styles.text}>
+        {props.chosenColour.toUpperCase()}
+      </Text>
+    </View>
   );
 };
 
@@ -25,14 +28,14 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 5,
   },
-  text:{
+  text: {
     color: "white",
     fontSize: 20,
     textAlign: "center",
     textShadowColor: "#666666",
     textShadowRadius: 1,
     letterSpacing: 1,
-  }
+  },
 });
 
 export default ColourBar;

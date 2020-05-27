@@ -1,10 +1,5 @@
-import React, {
-  useState,
-  useLayoutEffect,
-  useCallback,
-  useEffect,
-} from "react";
-import { ScrollView, View, StyleSheet, Text, FlatList } from "react-native";
+import React, { useState, useLayoutEffect, useEffect } from "react";
+import { View, StyleSheet, Text, FlatList } from "react-native";
 import { ColorPicker } from "react-native-color-picker";
 import {
   HeaderButtons,
@@ -20,7 +15,7 @@ import ColourTile from "../components/ColourTile";
 import InputPicker from "../components/InputPicker";
 import { useDispatch, useSelector } from "react-redux";
 
-import { setColor, addFavourite } from "../store/actions/colors";
+import { setColor, addFavourite, addHistory } from "../store/actions/colors";
 
 const HomeScreen = (props) => {
   const selectedColor = useSelector((state) => state.colors.selectedColor);
@@ -44,15 +39,21 @@ const HomeScreen = (props) => {
             title="Mode change"
             iconName={"md-swap"}
             onPress={modeChangeHandler}
+            show={colour ? "never" : "always"}
           />
           <Item
             title="Favourite"
             iconName={"md-star"}
-            disabled={colour ? false : true}
-            colour={colour ? "white" : "#aaa"}
+            show={colour ? "always" : "never"}
+            colour={selectedColors.length === 0 ? "#aaa" : "white"}
             onPress={favDispathcer}
           />
-          <Item title="Reset" iconName={"md-refresh"} onPress={resetHandler} />
+          <Item
+            title="Reset"
+            show={colour ? "always" : "never"}
+            iconName={"md-refresh"}
+            onPress={resetHandler}
+          />
         </HeaderButtons>
       ),
     });
@@ -103,6 +104,7 @@ const HomeScreen = (props) => {
 
   const setColourHandler = (color) => {
     dispatch(setColor(color));
+    dispatch(addHistory(color)); 
     setChosenColor(color);
     setColour(true);
   };

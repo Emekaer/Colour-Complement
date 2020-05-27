@@ -1,4 +1,10 @@
-import { SET_COLOR, ADD_COLOR, ADD_FAV, DELETE_FAV } from "../actions/colors";
+import {
+  SET_COLOR,
+  ADD_COLOR,
+  ADD_FAV,
+  DELETE_FAV,
+  ADD_HISTORY,
+} from "../actions/colors";
 import { Complements } from "../../functions/functionArray";
 
 const initialState = {
@@ -15,39 +21,18 @@ updateObject = (oldObject, newValues) => {
 export default (state = initialState, action) => {
   switch (action.type) {
     case SET_COLOR: {
-      const updatedHistory = [...state.history];
-      if (updatedHistory.length > 9) {
-        updatedHistory.splice(9, 1);
-        updatedHistory.unshift({
-          id: Date.now().toLocaleString(),
-          data: action.color,
-        });
-
-        return {
-          ...state,
-          selectedColor: action.color,
-          colorArray: Complements(action.color),
-          history: updatedHistory,
-        };
-      } else {
-        updatedHistory.unshift({
-          id: Date.now().toLocaleString(),
-          data: action.color,
-        });
-        return {
-          ...state,
-          selectedColor: action.color,
-          colorArray: Complements(action.color),
-          history: updatedHistory,
-        };
-      }
+      return {
+        ...state,
+        selectedColor: action.color,
+        colorArray: Complements(action.color),
+      };
     }
-    case ADD_COLOR: {
-      const updatedColorArray = state.colorArray.concat({
-        title: action.title,
-        data: action.color,
-      });
-      return updateObject(state, { colorArray: updatedColorArray });
+    case SET_COLOR: {
+      const updatedHistory = state.history.concat(action.storedData);
+      return {
+        ...state,
+        history: updatedHistory,
+      };
     }
     case ADD_FAV: {
       const updatedFavs = state.favourites.concat(action.storedData);

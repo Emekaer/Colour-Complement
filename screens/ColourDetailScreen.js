@@ -14,12 +14,12 @@ const ColourDetailScreen = (props) => {
         <ColourCard chosenColour={mainColor} />
         <View style={styles.mainColorText}>
           <View>
-            <Text style={{ ...styles.mainColorTitles, color: mainColor }}>
+            <Text  selectable={true} style={{ ...styles.mainColorTitles, color: mainColor }}>
               {mainColor.toUpperCase()}
             </Text>
           </View>
           <View style={styles.mainColorTextContainer}>
-            <Text style={{ ...styles.mainColorTitles, color: mainColor }}>
+            <Text selectable={true} style={{ ...styles.mainColorTitles, color: mainColor }}>
               {rgbString(mainColor)}
             </Text>
           </View>

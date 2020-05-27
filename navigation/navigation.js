@@ -33,7 +33,7 @@ const HomeStack = () => {
         component={HomeScreen}
         options={(navData) => {
           return {
-            headerTitle: "Colour Complements",
+            headerTitle: "Schemes",
             headerLeft: () => (
               <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
                 <Item

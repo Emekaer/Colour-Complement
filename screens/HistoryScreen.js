@@ -1,14 +1,25 @@
-import React from "react";
+import React,{useEffect, useState} from "react";
 import {
   View,
   StyleSheet,
   FlatList,
   Text,
 } from "react-native";
-import { useSelector } from "react-redux";
+import { AsyncStorage } from "react-native";
 
 const HistoryScreen = (props) => {
-  const history = useSelector((state) => state.colors.history);
+  const [history, setHistory] = useState([]);
+  useEffect(() => {
+    const gethistory = async () => {
+      const history = await AsyncStorage.getItem("history");
+
+      const transformedData = JSON.parse(history);
+
+      setHistory(transformedData);
+    };
+
+    gethistory();
+  }, [history]);
 
   return (
     <View style={styles.screen}>
