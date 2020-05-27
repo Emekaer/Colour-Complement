@@ -8,6 +8,7 @@ import CustomHeaderButton from "../components/HeaderButton";
 import ColourTile from "../components/ColourTile";
 import InputPicker from "../components/InputPicker";
 import { useDispatch, useSelector } from "react-redux";
+import Swiper from "react-native-swiper";
 
 import { setColor, addFavourite, addHistory } from "../store/actions/colors";
 
@@ -17,7 +18,6 @@ const HomeScreen = (props) => {
   const [selectedColors, setSelectedColors] = useState([]);
   const [colour, setColour] = useState(false);
   const [chosenColor, setChosenColor] = useState(selectedColor);
-  const [mode, setMode] = useState(true);
   const [isVisible, setIsVisible] = useState(false);
 
   const dispatch = useDispatch();
@@ -29,7 +29,7 @@ const HomeScreen = (props) => {
 
   useEffect(() => {
     if (historyColor !== undefined) {
-      setChosenColor(historyColor)
+      setChosenColor(historyColor);
       setColour(true);
     }
   }, [route]);
@@ -38,12 +38,6 @@ const HomeScreen = (props) => {
     navigation.setOptions({
       headerRight: () => (
         <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
-          <Item
-            title="Mode change"
-            iconName={"md-swap"}
-            onPress={modeChangeHandler}
-            show={colour ? "never" : "always"}
-          />
           <Item
             title="Favourite"
             iconName={"md-star"}
@@ -101,10 +95,6 @@ const HomeScreen = (props) => {
     dispatch(addFavourite({ title: selected.title, data: selected.data }));
   };
 
-  const modeChangeHandler = () => {
-    setMode((mode) => !mode);
-  };
-
   const setColourHandler = (color) => {
     dispatch(setColor(color));
     dispatch(addHistory(color));
@@ -119,39 +109,29 @@ const HomeScreen = (props) => {
 
   let selectPane;
 
-  if (mode && colour) {
+  if (colour) {
     selectPane = (
-      <View style={styles.selectionArea}>
-        <View
-          style={{
-            ...styles.pickedColor,
-            backgroundColor: chosenColor,
-            shadowColor: chosenColor,
-          }}
-        >
-          <Text selectable={true} style={styles.selectedText}>
-            {selectedColor.toUpperCase()}
-          </Text>
-        </View>
-      </View>
-    );
-  } else if (mode && !colour) {
-    selectPane = (
-      <View style={styles.selectionArea}>
-        <ColorPicker
-          style={{ flex: 1 }}
-          defaultColor={selectedColor}
-          onColorSelected={(color) => {
-            setColourHandler(color);
-          }}
-        />
+      <View
+        style={{
+          ...styles.pickedColor,
+          backgroundColor: chosenColor,
+          shadowColor: chosenColor,
+        }}
+      >
+        <Text selectable={true} style={styles.selectedText}>
+          {selectedColor.toUpperCase()}
+        </Text>
       </View>
     );
   } else {
     selectPane = (
-      <View style={styles.selectionArea}>
-        <InputPicker submitHandler={(color) => setColourHandler(color)} />
-      </View>
+      <ColorPicker
+        style={{ flex: 1 }}
+        defaultColor={selectedColor}
+        onColorSelected={(color) => {
+          setColourHandler(color);
+        }}
+      />
     );
   }
 
@@ -187,7 +167,20 @@ const HomeScreen = (props) => {
 
   return (
     <View style={styles.screen}>
-      {selectPane}
+      <View style={styles.selectionArea}>
+        <Swiper
+          scrollEnabled={colour ? true : false}
+          showsButtons={true}
+          showsPagination={false}
+          nextButton={<Text style={styles.buttonText}>›</Text>}
+          prevButton={<Text style={styles.buttonText}>‹</Text>}
+        >
+          {selectPane}
+          <View style={styles.selectionArea}>
+            <InputPicker selectedColor={chosenColor} submitHandler={(color) => setColourHandler(color)} />
+          </View>
+        </Swiper>
+      </View>
       {selectedArea}
       <Snackbar
         visible={isVisible}
@@ -247,6 +240,12 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontSize: 16,
     letterSpacing: 1.5,
+    textShadowColor: "#666666",
+    textShadowRadius: 1,
+  },
+  buttonText: {
+    fontSize: 50,
+    color: "white",
     textShadowColor: "#666666",
     textShadowRadius: 1,
   },

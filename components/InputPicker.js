@@ -6,9 +6,20 @@ import { rgbToHex, hexToRgb } from "../functions/functions";
 import MyButton from "./MyButton";
 
 const InputPicker = (props) => {
-  const selectedColor = useSelector(
+  let selectedColor = useSelector(
     (state) => state.colors.selectedColor
   ).toUpperCase();
+
+  const pickedColor = props.selectedColor;
+
+  useEffect(() => {
+    if (selectedColor != pickedColor) {
+      selectedColor = pickedColor;
+      setChosenColor(pickedColor)
+      setChosenRGB(hexToRgb(pickedColor))
+    }
+  }, [selectedColor, pickedColor]);
+
   const selectedRGB = hexToRgb(selectedColor);
   const [chosenColor, setChosenColor] = useState(selectedColor);
   const [chosenRGB, setChosenRGB] = useState(selectedRGB);
@@ -34,19 +45,19 @@ const InputPicker = (props) => {
   return (
     <View style={{ ...styles.screen, ...props.style }}>
       <View style={styles.inputView}>
-        <Text>Hex Value :</Text>
+        <Text>Hex:</Text>
         <TextInput
           maxLength={7}
           style={styles.input1}
           autoCapitalize="characters"
-          defaultValue={selectedColor}
+          defaultValue={chosenColor}
           value={chosenColor.toUpperCase()}
           onChangeText={(value) => setChosenColor(value)}
         />
         <MyButton title="Set Value" onPress={setColourHandlerHex} />
       </View>
       <View style={styles.inputView}>
-        <Text style={styles.label}>RGB Value:</Text>
+        <Text style={styles.label}>RGB:</Text>
         <Text>R:</Text>
         <TextInput
           style={styles.input}
@@ -98,12 +109,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   inputView: {
-    width: "100%",
     flexDirection: "row",
-    paddingHorizontal: 10,
     marginVertical: 15,
     alignItems: "center",
-    justifyContent: "space-between",
+    justifyContent: "space-evenly",
   },
   input: {
     borderColor: "#ccc",

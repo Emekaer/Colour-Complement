@@ -11,34 +11,33 @@ const ColourTile = (props) => {
   };
 
   return (
-    <TouchableOpacity
-      onPress={props.pressHandler}
-      onLongPress={longPressHandler}
-    >
-      <View
-        style={{
-          ...styles.component,
-          backgroundColor: props.chosenColour,
-          shadowColor: props.chosenColour,
-        }}
+    <View>
+      <TouchableOpacity
+        onPress={props.pressHandler}
+        onLongPress={longPressHandler}
       >
-        <Text style={{ ...styles.text }}>Click to Adjust</Text>
-        <Text style={{ ...styles.text }}>{props.schemeType}</Text>
-        <Text style={{ ...styles.text }}>
-          {props.schemeColor.toUpperCase()}
-        </Text>
-        {selected ? (
-          <View style={styles.icon}>
-            <Ionicons
-              name="md-star"
-              size={24}
-              color="white"
-              style={{ textShadowColor: "#666666", textShadowRadius: 1 }}
-            />
-          </View>
-        ) : null}
-      </View>
-    </TouchableOpacity>
+        <View
+          style={{
+            ...styles.component,
+            backgroundColor: props.chosenColour,
+            shadowColor: props.chosenColour,
+          }}
+        >
+          {selected ? (
+            <View style={styles.icon}>
+              <Ionicons
+                name="md-star"
+                size={23}
+                color="white"
+                style={{ textShadowColor: "#666666", textShadowRadius: 1 }}
+              />
+            </View>
+          ) : null}
+        </View>
+      </TouchableOpacity>
+      <Text selectable={true} style={{ ...styles.text }}>{props.schemeType}</Text>
+      <Text selectable={true} style={{ ...styles.text }}>{props.schemeColor.toUpperCase()}</Text>
+    </View>
   );
 };
 
@@ -59,12 +58,11 @@ const styles = StyleSheet.create({
   text: {
     fontWeight: "400",
     fontSize: 16,
-    color: "white",
+    color: "#ccc",
     textAlign: "center",
-    textShadowColor: "#666666",
-    textShadowRadius: 1,
   },
   icon: {
+    flex: 1,
     alignItems: "flex-end",
     justifyContent: "flex-end",
   },

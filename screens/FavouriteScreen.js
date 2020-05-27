@@ -7,7 +7,7 @@ import {
   Text,
 } from "react-native";
 
-import ColourTile from "../components/ColourTile";
+import ColourTile2 from "../components/ColourTile2";
 import { useDispatch } from "react-redux";
 import { AsyncStorage } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
@@ -73,13 +73,8 @@ const FavouriteScreen = (props) => {
               keyExtractor={(item, index) => item + index}
               renderItem={({ item, index }) => (
                 <View style={styles.item}>
-                  <ColourTile
-                    /*  pressHandler={() => {
-                pressHandler(item.data);
-              }}
-              selection={() => selectionHandler(item.data)} */
+                  <ColourTile2
                     chosenColour={item.color}
-                    schemeType={item.color}
                     schemeColor={item.color}
                   />
                 </View>
