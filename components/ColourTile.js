@@ -26,7 +26,7 @@ const ColourTile = (props) => {
           {selected ? (
             <View style={styles.icon}>
               <Ionicons
-                name="md-star"
+                name="md-checkmark"
                 size={23}
                 color="white"
                 style={{ textShadowColor: "#666666", textShadowRadius: 1 }}

@@ -8,80 +8,116 @@ import {
 } from "react-native";
 
 import ColourTile2 from "../components/ColourTile2";
-import { useDispatch } from "react-redux";
-import { AsyncStorage } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import { ActivityIndicator } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { deleteFavourite } from "../store/actions/colors";
+import { deleteFavourite, fetchFavourites } from "../store/actions/colors";
 
 const FavouriteScreen = (props) => {
-  const [favourites, setFavourites] = useState([]);
+  const favourites = useSelector((state) => state.colors.favourites);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingItem, setIsLoadingItem] = useState(false);
+
   const dispatch = useDispatch();
 
-  useEffect(() => {
+  const loadFavourites = useEffect(() => {
     const getFavourites = async () => {
-      const favourites = await AsyncStorage.getItem("favourites");
-
-      const transformedData = JSON.parse(favourites);
-
-      setFavourites(transformedData);
+      setIsLoading(true);
+      dispatch(fetchFavourites());
+      setIsLoading(false);
     };
 
     getFavourites();
-  }, [favourites]);
+  }, [dispatch, deleteHandler]);
+
+  const deleteHandler = async (title, data) => {
+    setIsLoadingItem(true);
+    dispatch(deleteFavourite({ title, data }));
+    setIsLoadingItem(false);
+  };
+
+  useEffect(() => {
+    props.navigation.addListener("willFocus", loadFavourites);
+  }, [loadFavourites]);
+
+  if (isLoading) {
+    return (
+      <View style={styles.activityIndicator}>
+        <ActivityIndicator size="large" color="grey" />
+      </View>
+    );
+  }
+
+  if (!isLoading && favourites.length === 0) {
+    return (
+      <View style={styles.activityIndicator}>
+        <Text style={{ fontSize: 30, textAlign: "center" }}>
+          No favourites Found.
+        </Text>
+        <Text style={{ fontSize: 30, textAlign: "center" }}>
+          Add some in the Home Screen.
+        </Text>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.screen}>
       <FlatList
         data={favourites}
         keyExtractor={(item, index) => item + index}
-        renderItem={({ item }) => (
-          <View>
-            <View style={styles.titleContainer}>
-              <View style={styles.title}>
+        renderItem={({ item }) => 
+          isLoadingItem ? (
+            <View style={styles.activityIndicator}>
+              <ActivityIndicator size="small" color="grey" />
+            </View>
+          ) : (
+            <View>
+              <View style={styles.titleContainer}>
+                <View style={styles.title}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      props.navigation.navigate("ColourDetailScreen", {
+                        mainColor: item.title,
+                        data: item.data,
+                      });
+                    }}
+                  >
+                    <Text
+                      selectable={true}
+                      style={{ ...styles.titleText, color: item.title }}
+                    >
+                      {item.title.toUpperCase()}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+
                 <TouchableOpacity
                   onPress={() => {
-                    props.navigation.navigate("ColourDetailScreen", {
-                      mainColor: item.title,
-                      data: item.data,
-                    });
+                    deleteHandler(item.title, item.data);
                   }}
                 >
-                  <Text
-                    selectable={true}
-                    style={{ ...styles.titleText, color: item.title }}
-                  >
-                    {item.title.toUpperCase()}
-                  </Text>
+                  <View style={styles.icon}>
+                    <Ionicons name="ios-close" size={32} color={item.title} />
+                  </View>
                 </TouchableOpacity>
               </View>
-
-              <TouchableOpacity
-                onPress={() => {
-                  dispatch(
-                    deleteFavourite({ title: item.title, data: item.data })
-                  );
-                }}
-              >
-                <View style={styles.icon}>
-                  <Ionicons name="ios-close" size={32} color={item.title} />
-                </View>
-              </TouchableOpacity>
+              <FlatList
+                data={item.data}
+                horizontal
+                keyExtractor={(item, index) => item + index}
+                renderItem={({ item, index }) => (
+                  <View style={styles.item}>
+                    <ColourTile2
+                      chosenColour={item.color}
+                      schemeColor={item.color}
+                    />
+                  </View>
+                )}
+              />
             </View>
-            <FlatList
-              data={item.data}
-              horizontal
-              keyExtractor={(item, index) => item + index}
-              renderItem={({ item, index }) => (
-                <View style={styles.item}>
-                  <ColourTile2
-                    chosenColour={item.color}
-                    schemeColor={item.color}
-                  />
-                </View>
-              )}
-            />
-          </View>
-        )}
+          )
+        }
       />
     </View>
   );
@@ -113,6 +149,11 @@ const styles = StyleSheet.create({
   icon: {
     flex: 1,
     paddingRight: "10%",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  activityIndicator: {
+    flex: 1,
     alignItems: "center",
     justifyContent: "center",
   },

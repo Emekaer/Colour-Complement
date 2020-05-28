@@ -40,7 +40,7 @@ const HomeScreen = (props) => {
         <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
           <Item
             title="Favourite"
-            iconName={"md-star"}
+            iconName={"md-add"}
             show={colour ? "always" : "never"}
             colour={selectedColors.length === 0 ? "#aaa" : "white"}
             onPress={favDispathcer}

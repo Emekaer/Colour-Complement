@@ -21,7 +21,7 @@ const AdjustScreen = (props) => {
   navigation.setOptions({
     headerRight: () => (
       <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
-        <Item title="Reset" iconName={"md-save"} onPress={saveHandler} />
+        <Item title="Reset" iconName={"md-add"} onPress={saveHandler} />
       </HeaderButtons>
     ),
   });

@@ -3,6 +3,10 @@ export const ADD_COLOR = "ADD_COLOR";
 export const ADD_FAV = "ADD_FAV";
 export const DELETE_FAV = "DELETE_FAV";
 export const ADD_HISTORY = "ADD_HISTORY";
+export const FETCH_HISTORY = "FETCH_HISTORY";
+export const FETCH_FAV = "FETCH_FAV";
+export const CLEAR_HISTORY = "CLEAR_HISTORY";
+
 import { AsyncStorage } from "react-native";
 
 export const setColor = (color) => {
@@ -17,7 +21,7 @@ export const addHistory = (title) => {
   return async (dispatch) => {
     let history = await AsyncStorage.getItem("history");
 
-    if (history == null) {
+    if (history === null) {
       await AsyncStorage.setItem("history", JSON.stringify([]));
       history = await AsyncStorage.getItem("history");
     }
@@ -26,12 +30,12 @@ export const addHistory = (title) => {
 
     if (transformedData.length > 9) {
       transformedData.splice(9, 1);
-      transformedData.unshift({
+      await transformedData.unshift({
         id: Date.now().toLocaleString(),
         data: title,
       });
     } else {
-      transformedData.unshift({
+      await transformedData.unshift({
         id: Date.now().toLocaleString(),
         data: title,
       });
@@ -56,7 +60,7 @@ export const addFavourite = ({ title, data }) => {
     }
 
     const transformedData = (await JSON.parse(favourites)) || "[]";
-    transformedData.push(newFav);
+    await transformedData.push(newFav);
 
     AsyncStorage.setItem("favourites", JSON.stringify(transformedData));
     await dispatch({
@@ -78,13 +82,66 @@ export const deleteFavourite = ({ title, data }) => {
 
     let transformedData = (await JSON.parse(favourites)) || "[]";
 
-    transformedData = transformedData.filter((data) => {
+    transformedData = await transformedData.filter((data) => {
       return data.title !== deletedFav.title && data.data !== deletedFav.data;
     });
 
     AsyncStorage.setItem("favourites", JSON.stringify(transformedData));
     await dispatch({
       type: DELETE_FAV,
+      storedData: transformedData,
+    });
+  };
+};
+
+export const fetchFavourites = () => {
+  return async (dispatch) => {
+    let favourites = await AsyncStorage.getItem("favourites");
+
+    if (favourites === null) {
+      await AsyncStorage.setItem("favourites", JSON.stringify([]));
+      favourites = await AsyncStorage.getItem("favourites");
+    }
+
+    const transformedData = await JSON.parse(favourites);
+
+    await dispatch({
+      type: FETCH_FAV,
+      storedData: transformedData,
+    });
+  };
+};
+
+export const fetchHistory = () => {
+  return async (dispatch) => {
+    let history = await AsyncStorage.getItem("history");
+    if (history === null) {
+      await AsyncStorage.setItem("history", JSON.stringify([]));
+      history = await AsyncStorage.getItem("history");
+    }
+
+    const transformedData = await JSON.parse(history);
+
+    await dispatch({
+      type: FETCH_HISTORY,
+      storedData: transformedData,
+    });
+  };
+};
+
+export const clearHistory = () => {
+  return async (dispatch) => {
+    let history = await AsyncStorage.getItem("history");
+    if (history === null) {
+      await AsyncStorage.setItem("history", JSON.stringify([]));
+      history = await AsyncStorage.getItem("history");
+    }
+
+    await AsyncStorage.setItem("history", JSON.stringify([]));
+    history = await AsyncStorage.getItem("history");
+    const transformedData = await JSON.parse(history);
+    await dispatch({
+      type: CLEAR_HISTORY,
       storedData: transformedData,
     });
   };

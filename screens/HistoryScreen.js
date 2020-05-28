@@ -1,30 +1,81 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useLayoutEffect } from "react";
 import {
   View,
   StyleSheet,
   FlatList,
   Text,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
-import { AsyncStorage } from "react-native";
-import { useDispatch } from "react-redux";
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import CustomHeaderButton from "../components/HeaderButton";
+import { useDispatch, useSelector } from "react-redux";
 
-import { setColor } from "../store/actions/colors";
+import { setColor, fetchHistory, clearHistory } from "../store/actions/colors";
 
 const HistoryScreen = (props) => {
-  const [history, setHistory] = useState([]);
+  const history = useSelector((state) => state.colors.history);
+  const [isLoading, setIsLoading] = useState(false);
+
   const dispatch = useDispatch();
-  useEffect(() => {
+  const { navigation } = props;
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+          <Item
+            title="Favourite"
+            iconName={"md-close"}
+            show={history ? "always" : "never"}
+            colour={history.length === 0 ? "#aaa" : "white"}
+            onPress={clearAllHandler}
+          />
+        </HeaderButtons>
+      ),
+    });
+  }, [dispatch]);
+
+  const clearAllHandler = () => {
+    dispatch(clearHistory());
+  };
+
+  const loadHistory = useEffect(() => {
     const gethistory = async () => {
-      const history = await AsyncStorage.getItem("history");
-
-      const transformedData = JSON.parse(history);
-
-      setHistory(transformedData);
+      setIsLoading(true);
+      dispatch(fetchHistory());
+      setIsLoading(false);
     };
 
     gethistory();
-  }, [history]);
+  }, [dispatch,clearAllHandler]);
+
+  useEffect(() => {
+    props.navigation.addListener("willFocus", loadHistory);
+  }, [loadHistory]);
+
+  if (isLoading) {
+    return (
+      <View style={styles.activityIndicator}>
+        <ActivityIndicator size="large" color="grey" />
+      </View>
+    );
+  }
+
+  if (
+    (!isLoading && history.length === 0) 
+  ) {
+    return (
+      <View style={styles.activityIndicator}>
+        <Text style={{ fontSize: 30, textAlign: "center" }}>
+          No History Found.
+        </Text>
+        <Text style={{ fontSize: 30, textAlign: "center" }}>
+          Add some in the Home Screen.
+        </Text>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.screen}>
@@ -43,7 +94,9 @@ const HistoryScreen = (props) => {
                 shadowColor: item.data,
               }}
               onPress={() => {
-                props.navigation.navigate("HomeScreen",{historyColor : item.data});
+                props.navigation.navigate("HomeScreen", {
+                  historyColor: item.data,
+                });
                 dispatch(setColor(item.data));
               }}
             >
@@ -87,7 +140,6 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 175,
     padding: 10,
-    marginTop: 5,
     marginRight: 5,
     alignItems: "center",
     justifyContent: "space-between",
@@ -105,6 +157,11 @@ const styles = StyleSheet.create({
     letterSpacing: 1.5,
     textShadowColor: "#666666",
     textShadowRadius: 1,
+  },
+  activityIndicator: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
 
