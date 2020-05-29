@@ -6,7 +6,7 @@ import {
   ADD_HISTORY,
   FETCH_HISTORY,
   FETCH_FAV,
-  CLEAR_HISTORY
+  CLEAR_HISTORY,
 } from "../actions/colors";
 import { Complements } from "../../functions/functionArray";
 
@@ -41,15 +41,15 @@ export default (state = initialState, action) => {
       return updateObject(state, { colorArray: updatedColorArray });
     }
     case ADD_FAV: {
-      const updatedFavs = (action.storedData);
+      const updatedFavs = action.storedData;
       return updateObject(state, { favourites: updatedFavs });
     }
     case DELETE_FAV: {
-      const updatedFavs = (action.storedData);
+      const updatedFavs = action.storedData;
       return updateObject(state, { favourites: updatedFavs });
     }
     case FETCH_FAV: {
-      const updatedFavs = action.storedData
+      const updatedFavs = action.storedData;
       return updateObject(state, { favourites: updatedFavs });
     }
     case FETCH_HISTORY: {

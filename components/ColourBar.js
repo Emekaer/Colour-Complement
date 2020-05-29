@@ -1,40 +1,82 @@
 import React from "react";
 import { View, StyleSheet, Text } from "react-native";
+import { hexToRgb } from "../functions/functions";
 
 const ColourBar = (props) => {
   return (
-    <View
-      style={{
-        ...styles.component,
-        backgroundColor: props.chosenColour,
-        shadowColor: props.chosenColour,
-      }}
-    >
-      <Text selectable={true} style={styles.text}>
-        {props.chosenColour.toUpperCase()}
-      </Text>
+    <View>
+      <View style={styles.bar}>
+        <View
+          style={{
+            ...styles.component,
+            backgroundColor: `rgba(${hexToRgb(props.chosenColour).r},${
+              hexToRgb(props.chosenColour).g
+            },${hexToRgb(props.chosenColour).b},1)`,
+            shadowColor: `rgba(${hexToRgb(props.chosenColour).r},${
+              hexToRgb(props.chosenColour).g
+            },${hexToRgb(props.chosenColour).b},1)`,
+          }}
+        ></View>
+        <View
+          style={{
+            ...styles.component,
+            backgroundColor: `rgba(${hexToRgb(props.chosenColour).r},${
+              hexToRgb(props.chosenColour).g
+            },${hexToRgb(props.chosenColour).b},0.8)`,
+            shadowColor: `rgba(${hexToRgb(props.chosenColour).r},${
+              hexToRgb(props.chosenColour).g
+            },${hexToRgb(props.chosenColour).b},0.8)`,
+          }}
+        ></View>
+        <View
+          style={{
+            ...styles.component,
+            backgroundColor: `rgba(${hexToRgb(props.chosenColour).r},${
+              hexToRgb(props.chosenColour).g
+            },${hexToRgb(props.chosenColour).b},0.6)`,
+            shadowColor: `rgba(${hexToRgb(props.chosenColour).r},${
+              hexToRgb(props.chosenColour).g
+            },${hexToRgb(props.chosenColour).b},0.6)`,
+          }}
+        ></View>
+        <View
+          style={{
+            ...styles.component,
+            backgroundColor: `rgba(${hexToRgb(props.chosenColour).r},${
+              hexToRgb(props.chosenColour).g
+            },${hexToRgb(props.chosenColour).b},0.4)`,
+            shadowColor: `rgba(${hexToRgb(props.chosenColour).r},${
+              hexToRgb(props.chosenColour).g
+            },${hexToRgb(props.chosenColour).b},0.4)`,
+          }}
+        ></View>
+        <View
+          style={{
+            ...styles.component,
+            backgroundColor: `rgba(${hexToRgb(props.chosenColour).r},${
+              hexToRgb(props.chosenColour).g
+            },${hexToRgb(props.chosenColour).b},0.2)`,
+            shadowColor: `rgba(${hexToRgb(props.chosenColour).r},${
+              hexToRgb(props.chosenColour).g
+            },${hexToRgb(props.chosenColour).b},0.2)`,
+          }}
+        ></View>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  component: {
+  bar: {
+    flex: 1,
+    flexDirection: "row",
     marginHorizontal: 5,
+  },
+  component: {
+    flex: 5,
     height: 40,
     justifyContent: "center",
     alignItems: "center",
-    shadowOpacity: 0.26,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 8,
-    elevation: 5,
-  },
-  text: {
-    color: "white",
-    fontSize: 20,
-    textAlign: "center",
-    textShadowColor: "#666666",
-    textShadowRadius: 1,
-    letterSpacing: 1,
   },
 });
 

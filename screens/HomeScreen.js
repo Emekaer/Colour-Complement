@@ -1,5 +1,12 @@
 import React, { useState, useLayoutEffect, useEffect } from "react";
-import { View, StyleSheet, Text, FlatList } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  FlatList,
+  Modal,
+  TextInput,
+} from "react-native";
 import { ColorPicker } from "react-native-color-picker";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import { Snackbar } from "react-native-paper";
@@ -11,6 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Swiper from "react-native-swiper";
 
 import { setColor, addFavourite, addHistory } from "../store/actions/colors";
+import MyButton from "../components/MyButton";
 
 const HomeScreen = (props) => {
   const selectedColor = useSelector((state) => state.colors.selectedColor);
@@ -19,6 +27,9 @@ const HomeScreen = (props) => {
   const [colour, setColour] = useState(false);
   const [chosenColor, setChosenColor] = useState(selectedColor);
   const [isVisible, setIsVisible] = useState(false);
+  const [isAddMode, setIsAddMode] = useState(false);
+  const [picked, setPicked] = useState(selected);
+  const [projectName, setProjectName] = useState(chosenColor.toUpperCase());
 
   const dispatch = useDispatch();
 
@@ -43,7 +54,10 @@ const HomeScreen = (props) => {
             iconName={"md-add"}
             show={colour ? "always" : "never"}
             colour={selectedColors.length === 0 ? "#aaa" : "white"}
-            onPress={favDispathcer}
+            onPress={() => {
+              setIsAddMode(true);
+              setProjectName(chosenColor.toUpperCase());
+            }}
           />
           <Item
             title="Reset"
@@ -62,6 +76,7 @@ const HomeScreen = (props) => {
     selectedColor,
     selectedColors,
     selected,
+    Complements,
   ]);
 
   const pressHandler = (color) => {
@@ -87,12 +102,20 @@ const HomeScreen = (props) => {
 
   useEffect(() => {
     selected = { title: chosenColor, data: selectedColors };
+    setPicked(selected);
   }, [selectedColors, chosenColor]);
 
   const favDispathcer = () => {
     setIsVisible(true);
     resetHandler();
-    dispatch(addFavourite({ title: selected.title, data: selected.data }));
+    setIsAddMode(false);
+    dispatch(
+      addFavourite({
+        name: projectName,
+        title: picked.title,
+        data: picked.data,
+      })
+    );
   };
 
   const setColourHandler = (color) => {
@@ -160,7 +183,7 @@ const HomeScreen = (props) => {
   } else {
     selectedArea = (
       <View style={styles.defaultText}>
-        <Text style={{ fontSize: 30 }}>Please Select a colour</Text>
+        <Text style={styles.someText}>Please Select a colour</Text>
       </View>
     );
   }
@@ -177,24 +200,42 @@ const HomeScreen = (props) => {
         >
           {selectPane}
           <View style={styles.selectionArea}>
-            <InputPicker selectedColor={chosenColor} submitHandler={(color) => setColourHandler(color)} />
+            <InputPicker
+              selectedColor={chosenColor}
+              submitHandler={(color) => setColourHandler(color)}
+            />
           </View>
         </Swiper>
       </View>
+      <Modal visible={isAddMode} animationType="slide">
+        <View style={styles.modal}>
+          <Text style={styles.someText}>Name of Project</Text>
+          <TextInput
+            style={styles.input}
+            defaultValue={projectName}
+            onChangeText={(value) => {
+              setProjectName(value);
+            }}
+          />
+          <View style={styles.modalButtons}>
+            <MyButton title="Save" onPress={favDispathcer} />
+            <MyButton
+              title="Cancel"
+              onPress={() => {
+                setIsAddMode(false);
+              }}
+            />
+          </View>
+        </View>
+      </Modal>
       {selectedArea}
       <Snackbar
         visible={isVisible}
         onDismiss={() => setIsVisible(false)}
-        action={{
-          label: "Undo",
-          onPress: () => {
-            // Do something
-          },
-        }}
         duration={3000}
         style={{ backgroundColor: "grey", borderRadius: 10 }}
       >
-        Added to Favourites
+        Added {projectName} to Favourites.
       </Snackbar>
     </View>
   );
@@ -204,6 +245,11 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     flexDirection: "column",
+  },
+  modal: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
   },
   selectionArea: {
     flexDirection: "row",
@@ -240,14 +286,30 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontSize: 16,
     letterSpacing: 1.5,
-    textShadowColor: "#666666",
+    textShadowColor: "#666",
     textShadowRadius: 1,
   },
   buttonText: {
     fontSize: 50,
     color: "white",
-    textShadowColor: "#666666",
+    textShadowColor: "#666",
     textShadowRadius: 1,
+  },
+  input: {
+    borderColor: "#ccc",
+    borderWidth: 1.5,
+    marginVertical: 10,
+    lineHeight: 25,
+    width: "80%",
+    textAlign: "center",
+  },
+  someText: { fontSize: 30, color: "#777" },
+  modalButtons: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-evenly",
+    width: "80%",
+    marginVertical: 20,
   },
 });
 

@@ -27,6 +27,10 @@ const InputPicker = (props) => {
   const dispatch = useDispatch();
 
   const setColourHandlerHex = () => {
+    if ( chosenColor.length !== 7) {
+      Alert.alert("Incorrect input", "Please enter a complete HEX Value. e.g #FFFFFF or #111111");
+      return;
+    }
     dispatch(setColor(chosenColor));
     setChosenRGB(hexToRgb(chosenColor));
     props.submitHandler(chosenColor);
@@ -54,7 +58,7 @@ const InputPicker = (props) => {
           value={chosenColor.toUpperCase()}
           onChangeText={(value) => setChosenColor(value)}
         />
-        <MyButton title="Set Value" onPress={setColourHandlerHex} />
+        <MyButton disabled={props.disabled} title="Set Value" onPress={setColourHandlerHex} />
       </View>
       <View style={styles.inputView}>
         <Text style={styles.label}>RGB:</Text>
@@ -97,7 +101,7 @@ const InputPicker = (props) => {
             setChosenRGB({ r: chosenRGB.r, g: chosenRGB.g, b: value })
           }
         />
-        <MyButton title="Set Value" onPress={setColourHandlerRGB} />
+        <MyButton disabled={props.disabled} title="Set Value" onPress={setColourHandlerRGB} />
       </View>
     </View>
   );

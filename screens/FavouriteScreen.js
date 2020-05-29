@@ -12,10 +12,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { ActivityIndicator } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { deleteFavourite, fetchFavourites } from "../store/actions/colors";
+import { Snackbar } from "react-native-paper";
+
 
 const FavouriteScreen = (props) => {
   const favourites = useSelector((state) => state.colors.favourites);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
+
   const [isLoadingItem, setIsLoadingItem] = useState(false);
 
   const dispatch = useDispatch();
@@ -32,6 +36,7 @@ const FavouriteScreen = (props) => {
 
   const deleteHandler = async (title, data) => {
     setIsLoadingItem(true);
+    setIsVisible(true);
     dispatch(deleteFavourite({ title, data }));
     setIsLoadingItem(false);
   };
@@ -63,7 +68,7 @@ const FavouriteScreen = (props) => {
 
   return (
     <View style={styles.screen}>
-      <FlatList
+         <FlatList
         data={favourites}
         keyExtractor={(item, index) => item + index}
         renderItem={({ item }) => 
@@ -78,6 +83,7 @@ const FavouriteScreen = (props) => {
                   <TouchableOpacity
                     onPress={() => {
                       props.navigation.navigate("ColourDetailScreen", {
+                        name: item.name,
                         mainColor: item.title,
                         data: item.data,
                       });
@@ -87,7 +93,7 @@ const FavouriteScreen = (props) => {
                       selectable={true}
                       style={{ ...styles.titleText, color: item.title }}
                     >
-                      {item.title.toUpperCase()}
+                      {item.name}
                     </Text>
                   </TouchableOpacity>
                 </View>
@@ -119,6 +125,14 @@ const FavouriteScreen = (props) => {
           )
         }
       />
+      <Snackbar
+        visible={isVisible}
+        onDismiss={() => setIsVisible(false)}
+        duration={3000}
+        style={{ backgroundColor: "grey", borderRadius: 10}}
+      >
+        Deleted .
+      </Snackbar>
     </View>
   );
 };

@@ -54,6 +54,17 @@ const HomeStack = () => {
         options={(navData) => {
           return {
             headerTitle: "Adjust Colour",
+            headerLeft: () => (
+              <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+                <Item
+                  title="back"
+                  iconName={"md-arrow-back"}
+                  onPress={() => {
+                    navData.navigation.goBack();
+                  }}
+                />
+              </HeaderButtons>
+            ),
           };
         }}
       />
@@ -113,32 +124,7 @@ const FavouriteStack = () => {
         }}
       />
       <Stack.Screen name="ColourDetailScreen" component={ColourDetailScreen} 
-      options={(navData) => {
-        return {
-          headerTitle: "Colour Details",
-          headerLeft: () => (
-            <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
-              <Item
-                title="back"
-                iconName={"md-arrow-back"}
-                onPress={() => {
-                  navData.navigation.goBack();
-                }}
-              />
-            </HeaderButtons>
-          ),headerRight: () => (
-            <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
-              <Item
-                title="back"
-                iconName={"md-share"}
-                onPress={() => {
-                  console.log("Share")
-                }}
-              />
-            </HeaderButtons>
-          )
-        };
-      }}/>
+      />
     </Stack.Navigator>
   );
 };

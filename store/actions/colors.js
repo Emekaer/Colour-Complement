@@ -49,9 +49,9 @@ export const addHistory = (title) => {
   };
 };
 
-export const addFavourite = ({ title, data }) => {
+export const addFavourite = ({ name, title, data }) => {
   return async (dispatch) => {
-    const newFav = { title: title, data: data };
+    const newFav = { name: name, title: title, data: data };
     let favourites = await AsyncStorage.getItem("favourites");
 
     if (favourites == null) {
@@ -60,7 +60,7 @@ export const addFavourite = ({ title, data }) => {
     }
 
     const transformedData = (await JSON.parse(favourites)) || "[]";
-    await transformedData.push(newFav);
+    await transformedData.unshift(newFav);
 
     AsyncStorage.setItem("favourites", JSON.stringify(transformedData));
     await dispatch({

@@ -22,7 +22,8 @@ const ColourTile2 = (props) => {
 const styles = StyleSheet.create({
   component: {
     flex: 1,
-    margin: 10,
+    marginVertical: 10,
+    marginHorizontal: 4,
     width: 150,
     height: 125,
     justifyContent: "center",

@@ -3,18 +3,22 @@ import { View, StyleSheet, Text } from "react-native";
 import { ColorPicker, fromHsv } from "react-native-color-picker";
 import { rgbString } from "../functions/functions";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
-import {addColor} from "../store/actions/colors"
-import {useDispatch} from "react-redux"
- 
+import { addColor } from "../store/actions/colors";
+import { useDispatch } from "react-redux";
+
 import CustomHeaderButton from "../components/HeaderButton";
+import { Snackbar } from "react-native-paper";
+
 
 const AdjustScreen = (props) => {
   const oldColor = props.route.params.oldColor;
   const setColor = props.route.params.color;
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const [changedColor, setChangedColor] = useState(oldColor);
   const [newColor, setNewColor] = useState(setColor);
+  const [isVisible, setIsVisible] = useState(false);
+
 
   const { navigation } = props;
 
@@ -31,21 +35,25 @@ const AdjustScreen = (props) => {
     setNewColor(fromHsv(color));
   };
 
-
   const saveHandler = () => {
     navigation.navigate("HomeScreen");
-    dispatch(addColor({title: "New Color", color: newColor}))
+    setIsVisible(true);
+    dispatch(addColor({ title: "New Color", color: newColor }));
   };
 
   return (
     <View style={styles.screen}>
       <View style={styles.infoArea}>
         <Text style={styles.text}>HEX CODE</Text>
-        <Text selectable={true} style={styles.text}>{changedColor.toUpperCase()}</Text>
+        <Text selectable={true} style={styles.text}>
+          {changedColor.toUpperCase()}
+        </Text>
       </View>
       <View style={styles.infoArea}>
         <Text style={styles.text}>RGB</Text>
-        <Text selectable={true} style={styles.text}>{rgbString(changedColor)}</Text>
+        <Text selectable={true} style={styles.text}>
+          {rgbString(changedColor)}
+        </Text>
       </View>
 
       <ColorPicker
@@ -55,7 +63,16 @@ const AdjustScreen = (props) => {
         onColorChange={(color) => {
           colorChangeHandler(color);
         }}
+        onColorSelected={saveHandler}
       />
+      <Snackbar
+        visible={isVisible}
+        onDismiss={() => setIsVisible(false)}
+        duration={3000}
+        style={{ backgroundColor: "grey", borderRadius: 10, justifyContent: "center", alignItems: "center" }}
+      >
+        New Colour Added
+      </Snackbar>
     </View>
   );
 };

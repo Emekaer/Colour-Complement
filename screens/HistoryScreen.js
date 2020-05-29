@@ -10,11 +10,14 @@ import {
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import CustomHeaderButton from "../components/HeaderButton";
 import { useDispatch, useSelector } from "react-redux";
+import { Snackbar } from "react-native-paper";
 
 import { setColor, fetchHistory, clearHistory } from "../store/actions/colors";
 
 const HistoryScreen = (props) => {
   const history = useSelector((state) => state.colors.history);
+  const [isVisible, setIsVisible] = useState(false);
+
   const [isLoading, setIsLoading] = useState(false);
 
   const dispatch = useDispatch();
@@ -29,14 +32,16 @@ const HistoryScreen = (props) => {
             iconName={"md-close"}
             show={history ? "always" : "never"}
             colour={history.length === 0 ? "#aaa" : "white"}
+            disabled={history.length === 0 ? true: false}
             onPress={clearAllHandler}
           />
         </HeaderButtons>
       ),
     });
-  }, [dispatch]);
+  }, [dispatch, loadHistory,clearAllHandler,history]);
 
   const clearAllHandler = () => {
+    setIsVisible(true);
     dispatch(clearHistory());
   };
 
@@ -48,10 +53,10 @@ const HistoryScreen = (props) => {
     };
 
     gethistory();
-  }, [dispatch,clearAllHandler]);
+  }, [dispatch, clearAllHandler]);
 
   useEffect(() => {
-    props.navigation.addListener("willFocus", loadHistory);
+    navigation.addListener("willFocus", loadHistory);
   }, [loadHistory]);
 
   if (isLoading) {
@@ -62,9 +67,7 @@ const HistoryScreen = (props) => {
     );
   }
 
-  if (
-    (!isLoading && history.length === 0) 
-  ) {
+  if (!isLoading && history.length === 0) {
     return (
       <View style={styles.activityIndicator}>
         <Text style={{ fontSize: 30, textAlign: "center" }}>
@@ -109,6 +112,14 @@ const HistoryScreen = (props) => {
           </View>
         )}
       />
+      <Snackbar
+        visible={isVisible}
+        onDismiss={() => setIsVisible(false)}
+        duration={3000}
+        style={{ backgroundColor: "grey", borderRadius: 10 }}
+      >
+        All Cleared
+      </Snackbar>
     </View>
   );
 };
