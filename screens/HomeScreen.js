@@ -30,6 +30,7 @@ const HomeScreen = (props) => {
   const [isAddMode, setIsAddMode] = useState(false);
   const [picked, setPicked] = useState(selected);
   const [projectName, setProjectName] = useState(chosenColor.toUpperCase());
+  const [selectionMode, setSelectionMode] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -60,6 +61,15 @@ const HomeScreen = (props) => {
             }}
           />
           <Item
+            title="multiadd"
+            iconName={"md-add"}
+            show={colour ? "always" : "never"}
+            colour={selectionMode ? "#aaa" : "white"}
+            onPress={() => {
+              setSelectionMode(!selectionMode);
+            }}
+          />
+          <Item
             title="Reset"
             show={colour ? "always" : "never"}
             iconName={"md-refresh"}
@@ -77,13 +87,19 @@ const HomeScreen = (props) => {
     selectedColors,
     selected,
     Complements,
+    selectionMode,
+    pressHandler,
   ]);
 
   const pressHandler = (color) => {
-    navigation.navigate("AdjustScreen", {
-      oldColor: selectedColor,
-      color: color,
-    });
+    if (selectionMode) {
+      selectionHandler(color);
+    } else {
+      navigation.navigate("AdjustScreen", {
+        oldColor: selectedColor,
+        color: color,
+      });
+    }
   };
 
   const selectionHandler = (value) => {
@@ -172,6 +188,7 @@ const HomeScreen = (props) => {
             pressHandler={() => {
               pressHandler(item.data);
             }}
+            selectionMode={selectionMode}
             selection={() => selectionHandler(item.data)}
             chosenColour={item.data}
             schemeType={item.title}

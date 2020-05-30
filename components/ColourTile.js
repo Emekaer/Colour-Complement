@@ -9,13 +9,18 @@ const ColourTile = (props) => {
     setSelected((selected) => !selected);
     props.selection();
   };
+  const pressHandler = () => {
+    if (props.selectionMode) {
+      longPressHandler();
+      props.pressHandler();
+    } else {
+      props.pressHandler();
+    }
+  };
 
   return (
     <View>
-      <TouchableOpacity
-        onPress={props.pressHandler}
-        onLongPress={longPressHandler}
-      >
+      <TouchableOpacity onPress={pressHandler} onLongPress={longPressHandler}>
         <View
           style={{
             ...styles.component,
@@ -35,8 +40,12 @@ const ColourTile = (props) => {
           ) : null}
         </View>
       </TouchableOpacity>
-      <Text selectable={true} style={{ ...styles.text }}>{props.schemeType}</Text>
-      <Text selectable={true} style={{ ...styles.text }}>{props.schemeColor.toUpperCase()}</Text>
+      <Text selectable={true} style={{ ...styles.text }}>
+        {props.schemeType}
+      </Text>
+      <Text selectable={true} style={{ ...styles.text }}>
+        {props.schemeColor.toUpperCase()}
+      </Text>
     </View>
   );
 };
