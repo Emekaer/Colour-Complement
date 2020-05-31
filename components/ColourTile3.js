@@ -2,7 +2,7 @@ import React from "react";
 import { View, StyleSheet, Text } from "react-native";
 import { ntc } from "../functions/colorNames";
 
-const ColourTile2 = (props) => {
+const ColourTile3 = (props) => {
   return (
     <View>
       <View
@@ -13,9 +13,9 @@ const ColourTile2 = (props) => {
         }}
       ></View>
       <Text selectable={true} style={styles.text}>
-        {ntc.name(props.schemeColor)[1]} 
+        {ntc.name(props.schemeColor)[1]}
         </Text>
-        <Text selectable={true} style={{ ...styles.text }}>(
+        <Text selectable={true} style={{ ...styles.text }}> (
         {ntc.name(props.schemeColor)[2] ? "Exactly" : "Approx."})
       </Text>
       <Text selectable={true} style={{ ...styles.text }}>
@@ -28,8 +28,7 @@ const ColourTile2 = (props) => {
 const styles = StyleSheet.create({
   component: {
     flex: 1,
-    marginVertical: 10,
-    marginHorizontal: 4,
+    margin: 15,
     width: 150,
     height: 125,
     justifyContent: "center",
@@ -52,4 +51,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ColourTile2;
+export default ColourTile3;

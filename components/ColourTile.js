@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { ntc } from "../functions/colorNames";
 
 const ColourTile = (props) => {
   const [selected, setSelected] = useState(false);
@@ -42,6 +43,12 @@ const ColourTile = (props) => {
       </TouchableOpacity>
       <Text selectable={true} style={{ ...styles.text }}>
         {props.schemeType}
+      </Text>
+      <Text selectable={true} style={styles.text}>
+        {ntc.name(props.schemeColor)[1]}{" "}
+      </Text>
+      <Text selectable={true} style={{ ...styles.text }}>
+        ({ntc.name(props.schemeColor)[2] ? "Exactly" : "Approx."})
       </Text>
       <Text selectable={true} style={{ ...styles.text }}>
         {props.schemeColor.toUpperCase()}

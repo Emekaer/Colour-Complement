@@ -27,8 +27,9 @@ const InputPicker = (props) => {
   const dispatch = useDispatch();
 
   const setColourHandlerHex = () => {
-    if ( chosenColor.length !== 7  && /^#[0-9A-F]{6}$/i.test(`${chosenColor}`)) {
-      Alert.alert("Incorrect input", "Please enter a complete HEX Value. e.g #FFFFFF or #111111");
+    const check = /^#[0-9A-F]{6}$/i.test(`${chosenColor}`)
+    if (!check || chosenColor.length !== 7  ) {
+      Alert.alert("Incorrect input", "Please enter a complete HEX Value. e.g #FFFF00 or #0011FF");
       return;
     }
     dispatch(setColor(chosenColor));
@@ -54,8 +55,7 @@ const InputPicker = (props) => {
           maxLength={7}
           style={styles.input1}
           autoCapitalize="characters"
-          defaultValue={chosenColor}
-          value={chosenColor.toUpperCase()}
+          placeholder={selectedColor.toUpperCase()}
           onChangeText={(value) => setChosenColor(value)}
         />
         <MyButton disabled={props.disabled} title="Set Value" onPress={setColourHandlerHex} />
@@ -69,8 +69,7 @@ const InputPicker = (props) => {
           min={0}
           max={255}
           keyboardType="number-pad"
-          defaultValue={`${selectedRGB.r}`}
-          value={`${chosenRGB.r}`}
+          placeholder={`${selectedRGB.r}`}
           onChangeText={(value) => {
             setChosenRGB({ r: value, g: chosenRGB.g, b: chosenRGB.b });
           }}
@@ -82,8 +81,7 @@ const InputPicker = (props) => {
           min={0}
           max={255}
           keyboardType="number-pad"
-          defaultValue={`${selectedRGB}`}
-          value={`${chosenRGB.g}`}
+          placeholder={`${selectedRGB.g}`}
           onChangeText={(value) =>
             setChosenRGB({ r: chosenRGB.r, g: value, b: chosenRGB.b })
           }
@@ -95,8 +93,7 @@ const InputPicker = (props) => {
           min={0}
           max={255}
           keyboardType="number-pad"
-          defaultValue={`${selectedRGB}`}
-          value={`${chosenRGB.b}`}
+          placeholder={`${selectedRGB.b}`}
           onChangeText={(value) =>
             setChosenRGB({ r: chosenRGB.r, g: chosenRGB.g, b: value })
           }

@@ -1,5 +1,5 @@
-import React, { useLayoutEffect, useState } from "react";
-import { View, StyleSheet, FlatList, Text, Share, Button } from "react-native";
+import React, { useLayoutEffect, useEffect, useState } from "react";
+import { View, StyleSheet, FlatList, Text } from "react-native";
 import ColourCard from "../components/ColourCard";
 import ColourBar from "../components/ColourBar";
 import { rgbString } from "../functions/functions";
@@ -8,6 +8,7 @@ import { Snackbar } from "react-native-paper";
 import * as Print from "expo-print";
 import * as Sharing from "expo-sharing";
 import CustomHeaderButton from "../components/HeaderButton";
+import { ntc } from "../functions/colorNames";
 
 const ColourDetailScreen = (props) => {
   const [isVisible, setIsVisible] = useState(false);
@@ -42,7 +43,7 @@ const ColourDetailScreen = (props) => {
   }, [navigation, route, name, myData, mainColor]);
 
   const shareHandler = async () => {
-    await createPDF();
+    await inputs();
     try {
       await Sharing.shareAsync(filePath.uri);
     } catch (error) {
@@ -51,16 +52,31 @@ const ColourDetailScreen = (props) => {
     setIsVisible(true);
   };
 
-  const generateHTML = (
-    `<div>
-      <span>${name}</span> <br/>
-            <span>Main Colour ${mainColor} </span><br/>
-            <span>Colour ${1} : ${myData[0].color}</span><br/>
-            <span>Colour ${2} : ${myData[1].color}</span><br/>
-            <span>Colour ${3} : ${myData[2].color}</span><br/>
+  var hitMe = "";
+  const inputs = async () => {
+    try {
+      for (var i = 0; i < myData.length; i++) {
+        hitMe += `<span>accent${i + 1} : ${myData[i].color.toUpperCase()}  //${
+          ntc.name(myData[i].color)[1]
+        }(${
+          ntc.name(myData[i].color)[2] ? "Exactly" : "Approx."
+        })  </span><br/>`;
+      }
+      generateHTML += `${hitMe} } `;
+    } catch (error) {
+      alert(error.message);
+    }
 
-</div>`)
+    await createPDF();
+  };
+
+  var generateHTML = `<div>
+      <span>${name.replace(/ +/g, "")}={</span> <br/>
+            <span>primaryColor: ${mainColor.toUpperCase()}// ${
+    ntc.name(mainColor)[1]
+  } (${ntc.name(mainColor)[2] ? "Exactly" : "Approx."}) </span><br/> 
   
+  `;
 
   let filePath;
   const createPDF = async () => {
@@ -70,7 +86,6 @@ const ColourDetailScreen = (props) => {
       height: 792,
       base64: false,
     });
-   
   };
 
   return (
@@ -83,10 +98,24 @@ const ColourDetailScreen = (props) => {
               selectable={true}
               style={{ ...styles.mainColorTitles, color: mainColor }}
             >
+              {ntc.name(mainColor)[1]}
+            </Text>
+            <Text
+              selectable={true}
+              style={{ ...styles.mainColorTitles, color: mainColor }}
+            >
+              ({ntc.name(mainColor)[2] ? "Exactly" : "Approx."})
+            </Text>
+          </View>
+          <View>
+            <Text
+              selectable={true}
+              style={{ ...styles.mainColorTitles, color: mainColor }}
+            >
               {mainColor.toUpperCase()}
             </Text>
           </View>
-          <View style={styles.mainColorTextContainer}>
+          <View>
             <Text
               selectable={true}
               style={{ ...styles.mainColorTitles, color: mainColor }}
@@ -107,14 +136,13 @@ const ColourDetailScreen = (props) => {
         )}
       />
       <Snackbar
-      visible={isVisible}
-      onDismiss={() => setIsVisible(false)}
-      duration={3000}
-      style={{ backgroundColor: "grey", borderRadius: 10 }}
-    >
-      {name} has been shared.
-    </Snackbar>
- 
+        visible={isVisible}
+        onDismiss={() => setIsVisible(false)}
+        duration={3000}
+        style={{ backgroundColor: "grey", borderRadius: 10 }}
+      >
+        {name} has been shared.
+      </Snackbar>
     </View>
   );
 };
@@ -129,15 +157,13 @@ const styles = StyleSheet.create({
   mainColorText: {
     flexDirection: "column",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-evenly",
     width: "50%",
-  },
-  mainColorTextContainer: {
-    marginTop: 20,
   },
   mainColorTitles: {
     fontSize: 24,
     fontWeight: "400",
+    textAlign: "center",
   },
 });
 

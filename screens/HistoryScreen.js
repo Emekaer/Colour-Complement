@@ -11,6 +11,8 @@ import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import CustomHeaderButton from "../components/HeaderButton";
 import { useDispatch, useSelector } from "react-redux";
 import { Snackbar } from "react-native-paper";
+import { ntc } from "../functions/colorNames";
+
 
 import { setColor, fetchHistory, clearHistory } from "../store/actions/colors";
 
@@ -103,10 +105,15 @@ const HistoryScreen = (props) => {
                 dispatch(setColor(item.data));
               }}
             >
-              <View>
+              <View style={{alignItems: "center", justifyContent: "center"}}> 
+              <Text selectable={true} style={styles.colorText}>
+                {ntc.name(item.data)[1]} (
+                {ntc.name(item.data)[2] ? "Exactly" : "Approx."})
+              </Text>
                 <Text selectable={true} style={styles.colorText}>
                   {item.data.toUpperCase()}
                 </Text>
+               
               </View>
             </TouchableOpacity>
           </View>

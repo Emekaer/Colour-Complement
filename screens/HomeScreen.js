@@ -13,13 +13,14 @@ import { Snackbar } from "react-native-paper";
 
 import CustomHeaderButton from "../components/HeaderButton";
 import ColourTile from "../components/ColourTile";
-import ColourTile2 from "../components/ColourTile2";
+import ColourTile3 from "../components/ColourTile2";
 import InputPicker from "../components/InputPicker";
 import { useDispatch, useSelector } from "react-redux";
 import Swiper from "react-native-swiper";
 
 import { setColor, addFavourite, addHistory } from "../store/actions/colors";
 import MyButton from "../components/MyButton";
+import { ntc } from "../functions/colorNames";
 
 const HomeScreen = (props) => {
   const selectedColor = useSelector((state) => state.colors.selectedColor);
@@ -159,7 +160,11 @@ const HomeScreen = (props) => {
         }}
       >
         <Text selectable={true} style={styles.selectedText}>
-          {selectedColor.toUpperCase()}
+          {ntc.name(chosenColor)[1]} (
+          {ntc.name(chosenColor)[2] ? "Exactly" : "Approx."})
+        </Text>
+        <Text selectable={true} style={styles.selectedText}>
+          {chosenColor.toUpperCase()}
         </Text>
       </View>
     );
@@ -179,7 +184,6 @@ const HomeScreen = (props) => {
   if (colour) {
     selectedArea = (
       <FlatList
-        contentContainerStyle={styles.selectArea}
         scrollEnabled={true}
         numColumns={2}
         data={Complements}
@@ -230,7 +234,7 @@ const HomeScreen = (props) => {
           <Text style={styles.someText}>Name of Project</Text>
           <TextInput
             style={styles.input}
-            defaultValue={projectName}
+            placeholder={selectedColor.toUpperCase()}
             onChangeText={(value) => {
               setProjectName(value);
             }}
@@ -245,25 +249,27 @@ const HomeScreen = (props) => {
             />
           </View>
           <View
-          style={{ width:"90%", height:"30%", margin: 10, marginBottom: 2, alignItems: "center", justifyContent:"center",
-            backgroundColor: chosenColor,
-            shadowColor: chosenColor,
-          }}
-        >
-          <Text selectable={true} style={styles.selectedText}>
-            {chosenColor.toUpperCase()}
-          </Text>
-        </View>
+            style={{
+              ...styles.modalChosenColor,
+              backgroundColor: chosenColor,
+              shadowColor: chosenColor,
+            }}
+          >
+            <Text selectable={true} style={styles.selectedText}>
+              {ntc.name(chosenColor)[1]} (
+              {ntc.name(chosenColor)[2] ? "Exactly" : "Approx."})
+            </Text>
+            <Text selectable={true} style={styles.selectedText}>
+              {chosenColor.toUpperCase()}
+            </Text>
+          </View>
           <FlatList
-            contentContainerStyle={styles.selectArea}
             scrollEnabled={true}
             numColumns={2}
             data={selectedColors}
-            keyExtractor={(item, index) => {
-              `${item.color}+ ${index}`;
-            }}
+            keyExtractor={(item) => item.color+ `modal` }            
             renderItem={({ item }) => (
-              <ColourTile2 chosenColour={item.color} schemeColor={item.color} />
+              <ColourTile3 chosenColour={item.color} schemeColor={item.color} />
             )}
           />
         </View>
@@ -350,6 +356,14 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     width: "80%",
     marginVertical: 10,
+  },
+  modalChosenColor: {
+    width: "95%",
+    height: "25%",
+    margin: 10,
+    marginBottom: 2,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
 
