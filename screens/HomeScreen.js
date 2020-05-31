@@ -13,6 +13,7 @@ import { Snackbar } from "react-native-paper";
 
 import CustomHeaderButton from "../components/HeaderButton";
 import ColourTile from "../components/ColourTile";
+import ColourTile2 from "../components/ColourTile2";
 import InputPicker from "../components/InputPicker";
 import { useDispatch, useSelector } from "react-redux";
 import Swiper from "react-native-swiper";
@@ -38,7 +39,6 @@ const HomeScreen = (props) => {
   const { route } = props;
 
   const historyColor = route.params?.historyColor;
-
 
   useEffect(() => {
     if (historyColor !== undefined) {
@@ -206,7 +206,6 @@ const HomeScreen = (props) => {
     );
   }
 
-
   return (
     <View style={styles.screen}>
       <View style={styles.selectionArea}>
@@ -223,7 +222,6 @@ const HomeScreen = (props) => {
               selectedColor={chosenColor}
               submitHandler={(color) => setColourHandler(color)}
             />
-           
           </View>
         </Swiper>
       </View>
@@ -246,6 +244,28 @@ const HomeScreen = (props) => {
               }}
             />
           </View>
+          <View
+          style={{ width:"90%", height:"30%", margin: 10, marginBottom: 2, alignItems: "center", justifyContent:"center",
+            backgroundColor: chosenColor,
+            shadowColor: chosenColor,
+          }}
+        >
+          <Text selectable={true} style={styles.selectedText}>
+            {chosenColor.toUpperCase()}
+          </Text>
+        </View>
+          <FlatList
+            contentContainerStyle={styles.selectArea}
+            scrollEnabled={true}
+            numColumns={2}
+            data={selectedColors}
+            keyExtractor={(item, index) => {
+              `${item.color}+ ${index}`;
+            }}
+            renderItem={({ item }) => (
+              <ColourTile2 chosenColour={item.color} schemeColor={item.color} />
+            )}
+          />
         </View>
       </Modal>
       {selectedArea}
@@ -329,7 +349,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-evenly",
     width: "80%",
-    marginVertical: 20,
+    marginVertical: 10,
   },
 });
 

@@ -11,7 +11,6 @@ const ColourTile2 = (props) => {
           shadowColor: props.chosenColour,
         }}
       ></View>
-
       <Text selectable={true} style={{ ...styles.text }}>
         {props.schemeColor.toUpperCase()}
       </Text>
