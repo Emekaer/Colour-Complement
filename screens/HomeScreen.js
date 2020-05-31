@@ -39,6 +39,7 @@ const HomeScreen = (props) => {
 
   const historyColor = route.params?.historyColor;
 
+
   useEffect(() => {
     if (historyColor !== undefined) {
       setChosenColor(historyColor);
@@ -51,6 +52,15 @@ const HomeScreen = (props) => {
       headerRight: () => (
         <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
           <Item
+            title="multiadd"
+            iconName={"md-checkmark-circle-outline"}
+            show={colour && selectedColors.length > 0 ? "always" : "never"}
+            colour={selectionMode ? "white" : "#aaa"}
+            onPress={() => {
+              setSelectionMode(!selectionMode);
+            }}
+          />
+          <Item
             title="Favourite"
             iconName={"md-add"}
             show={colour ? "always" : "never"}
@@ -58,15 +68,6 @@ const HomeScreen = (props) => {
             onPress={() => {
               setIsAddMode(true);
               setProjectName(chosenColor.toUpperCase());
-            }}
-          />
-          <Item
-            title="multiadd"
-            iconName={"md-add"}
-            show={colour ? "always" : "never"}
-            colour={selectionMode ? "#aaa" : "white"}
-            onPress={() => {
-              setSelectionMode(!selectionMode);
             }}
           />
           <Item
@@ -205,6 +206,7 @@ const HomeScreen = (props) => {
     );
   }
 
+
   return (
     <View style={styles.screen}>
       <View style={styles.selectionArea}>
@@ -221,6 +223,7 @@ const HomeScreen = (props) => {
               selectedColor={chosenColor}
               submitHandler={(color) => setColourHandler(color)}
             />
+           
           </View>
         </Swiper>
       </View>

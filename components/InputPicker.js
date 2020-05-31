@@ -27,7 +27,7 @@ const InputPicker = (props) => {
   const dispatch = useDispatch();
 
   const setColourHandlerHex = () => {
-    if ( chosenColor.length !== 7) {
+    if ( chosenColor.length !== 7  && /^#[0-9A-F]{6}$/i.test(`${chosenColor}`)) {
       Alert.alert("Incorrect input", "Please enter a complete HEX Value. e.g #FFFFFF or #111111");
       return;
     }

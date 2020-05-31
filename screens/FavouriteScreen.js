@@ -104,7 +104,7 @@ const FavouriteScreen = (props) => {
                   }}
                 >
                   <View style={styles.icon}>
-                    <Ionicons name="ios-close" size={32} color={item.title} />
+                    <Ionicons name="ios-close" size={32} color={ "#777" } />
                   </View>
                 </TouchableOpacity>
               </View>
@@ -131,7 +131,7 @@ const FavouriteScreen = (props) => {
         duration={3000}
         style={{ backgroundColor: "grey", borderRadius: 10}}
       >
-        Deleted .
+        Deleted 
       </Snackbar>
     </View>
   );
