@@ -1,5 +1,11 @@
-import React, { useLayoutEffect, useEffect, useState } from "react";
-import { View, StyleSheet, FlatList, Text } from "react-native";
+import React, { useLayoutEffect, useCallback, useState } from "react";
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  Text,
+  ActivityIndicator,
+} from "react-native";
 import ColourCard from "../components/ColourCard";
 import ColourBar from "../components/ColourBar";
 import { rgbString } from "../functions/functions";
@@ -12,6 +18,7 @@ import { ntc } from "../functions/colorNames";
 
 const ColourDetailScreen = (props) => {
   const [isVisible, setIsVisible] = useState(false);
+  const [isLoadingVisible, setIsLoadingVisible] = useState(false);
 
   const mainColor = props.route.params.mainColor;
   const myData = props.route.params.data;
@@ -42,21 +49,27 @@ const ColourDetailScreen = (props) => {
     });
   }, [navigation, route, name, myData, mainColor]);
 
-  const shareHandler = async () => {
-    await inputs();
-    try {
-      await Sharing.shareAsync(filePath.uri);
-    } catch (error) {
-      alert(error.message);
-    }
-    setIsVisible(true);
-  };
+  const shareHandler = useCallback(() => {
+    setIsLoadingVisible(true);
+
+    const pdf = async () => {
+      await inputs();
+      try {
+        await Sharing.shareAsync(filePath.uri);
+      } catch (error) {
+        alert(error.message);
+      }
+      setIsLoadingVisible(false);
+      setIsVisible(true);
+    };
+    pdf();
+  }, [navigation, route]);
 
   var hitMe = "";
   const inputs = async () => {
     try {
       for (var i = 0; i < myData.length; i++) {
-        hitMe += `<span>accent${i + 1} : ${myData[i].color.toUpperCase()}  //${
+        hitMe += `<span>accent${i + 1} : ${myData[i].color.toUpperCase()} , //${
           ntc.name(myData[i].color)[1]
         }(${
           ntc.name(myData[i].color)[2] ? "Exactly" : "Approx."
@@ -72,7 +85,7 @@ const ColourDetailScreen = (props) => {
 
   var generateHTML = `<div>
       <span>${name.replace(/ +/g, "")}={</span> <br/>
-            <span>primaryColor: ${mainColor.toUpperCase()}// ${
+            <span>primaryColor: ${mainColor.toUpperCase()},// ${
     ntc.name(mainColor)[1]
   } (${ntc.name(mainColor)[2] ? "Exactly" : "Approx."}) </span><br/> 
   
@@ -125,6 +138,11 @@ const ColourDetailScreen = (props) => {
           </View>
         </View>
       </View>
+      {isLoadingVisible ? (
+        <View style={styles.activityIndicator}>
+          <ActivityIndicator size="large" color="grey" />
+        </View>
+      ) : null}
       <View style={{ height: 40 }}>
         <ColourBar chosenColour={mainColor} data={null}></ColourBar>
       </View>
