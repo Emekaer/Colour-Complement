@@ -34,11 +34,12 @@ Expo Client supports running any project that doesn't have custom native modules
 ** Or point your phone's camera at the QR code in the terminal (press "c" to view it).
 
 * Support and Contact
-** If you're having issues with Create React Native App, please make sure:
 
-*** The issue is not covered in the Expo Docs
-*** There is not already an open issue for your particular problem
-*** If you've checked the documentation and currently open issues, please either open a new GitHub issue or ask a question on Expo forums.
+If you're having issues with Create React Native App, please make sure:
+
+* The issue is not covered in the Expo Docs
+* There is not already an open issue for your particular problem
+* If you've checked the documentation and currently open issues, please either open a new GitHub issue or ask a question on Expo forums.
 
 
 ## Built With
