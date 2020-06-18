@@ -29,11 +29,13 @@ Expo Client supports running any project that doesn't have custom native modules
 
 * Start the project expo start
 
-* Open the project:
-** Sign in to expo and the project will appear in the app.
-** Or point your phone's camera at the QR code in the terminal (press "c" to view it).
+* Open the project
 
-* Support and Contact
+* Sign in to expo and the project will appear in the app.
+
+* Or point your phone's camera at the QR code in the terminal (press "c" to view it).
+
+###### Support and Contact
 
 If you're having issues with Create React Native App, please make sure:
 
