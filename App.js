@@ -1,6 +1,6 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { Provider } from "react-redux";
+import { Provider } from "./src/screens/node_modules/react-redux";
 import { Provider as PaperProvider } from "react-native-paper";
 import { combineReducers, createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";

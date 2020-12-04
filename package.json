@@ -13,10 +13,10 @@
     "@react-navigation/drawer": "^5.6.3",
     "@react-navigation/native": "^5.2.3",
     "@react-navigation/stack": "^5.2.18",
-    "@types/react": "^16.9.34",
-    "@types/react-native": "^0.62.5",
+    "@types/react-redux": "^7.1.11",
     "expo": "~37.0.3",
     "expo-print": "~8.1.0",
+    "expo-sharing": "~8.1.0",
     "react": "~16.9.0",
     "react-dom": "~16.9.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-37.0.1.tar.gz",
@@ -31,12 +31,16 @@
     "react-navigation-header-buttons": "^3.0.5",
     "react-redux": "^7.2.0",
     "redux": "^4.0.5",
-    "redux-thunk": "^2.3.0",
-    "expo-sharing": "~8.1.0"
+    "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.8.6",
+    "@types/jest": "^26.0.16",
+    "@types/react": "^16.14.2",
+    "@types/react-native": "^0.62.18",
+    "@types/react-test-renderer": "^17.0.0",
     "babel-preset-expo": "~8.1.0",
-    "@babel/core": "^7.8.6"
+    "typescript": "^4.1.2"
   },
   "private": true
 }
