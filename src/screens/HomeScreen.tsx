@@ -7,6 +7,8 @@ import {
   Modal,
   TextInput,
 } from "react-native";
+import { HomeStackNavigationProp, HomeScreenRouteProp } from '../navigation/types';
+import { RootState } from "../store/store"
 import { ColorPicker } from "react-native-color-picker";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import { Snackbar } from "react-native-paper";
@@ -22,9 +24,18 @@ import { setColor, addFavourite, addHistory } from "../store/actions/colors";
 import MyButton from "../components/MyButton";
 import { ntc } from "../functions/colorNames";
 
-const HomeScreen = (props) => {
-  const selectedColor = useSelector((state) => state.colors.selectedColor);
-  const Complements = useSelector((state) => state.colors.colorArray);
+interface IProps {
+  route: HomeScreenRouteProp,
+  navigation: HomeStackNavigationProp,
+}
+
+const HomeScreen = (props: IProps) => {
+  const selectedColor = useSelector((state: RootState) => state.colors.selectedColor);
+  const Complements = useSelector((state: RootState) => state.colors.colorArray);
+  
+  let selected;
+
+
   const [selectedColors, setSelectedColors] = useState([]);
   const [colour, setColour] = useState(false);
   const [chosenColor, setChosenColor] = useState(selectedColor);
@@ -115,8 +126,6 @@ const HomeScreen = (props) => {
       setSelectedColors([...selectedColors, { color: value }]);
     }
   };
-
-  let selected;
 
   useEffect(() => {
     selected = { title: chosenColor, data: selectedColors };
@@ -267,7 +276,7 @@ const HomeScreen = (props) => {
             scrollEnabled={true}
             numColumns={2}
             data={selectedColors}
-            keyExtractor={(item) => item.color+ `modal` }            
+            keyExtractor={(item) => item.color + `modal`}
             renderItem={({ item }) => (
               <ColourTile3 chosenColour={item.color} schemeColor={item.color} />
             )}

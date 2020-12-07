@@ -1,16 +1,25 @@
 import React, { useState, useLayoutEffect } from "react";
 import { View, StyleSheet, Text } from "react-native";
-import { ColorPicker, fromHsv } from "react-native-color-picker";
+import { ColorPicker, fromHsv, HsvColor } from "react-native-color-picker";
 import { rgbString } from "../functions/functions";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import { addColor } from "../store/actions/colors";
 import { useDispatch } from "react-redux";
+import { HomeStackNavigationProp, AdjustScreenRouteProp } from '../navigation/types';
+
 
 import CustomHeaderButton from "../components/HeaderButton";
 import { Snackbar } from "react-native-paper";
 
 
-const AdjustScreen = (props) => {
+interface IProps {
+  route: AdjustScreenRouteProp,
+  navigation: HomeStackNavigationProp,
+
+
+}
+
+const AdjustScreen = (props: IProps) => {
   const oldColor = props.route.params.oldColor;
   const setColor = props.route.params.color;
   const dispatch = useDispatch();
@@ -30,7 +39,7 @@ const AdjustScreen = (props) => {
     ),
   });
 
-  const colorChangeHandler = (color) => {
+  const colorChangeHandler = (color: HsvColor) => {
     setChangedColor(fromHsv(color));
     setNewColor(fromHsv(color));
   };
