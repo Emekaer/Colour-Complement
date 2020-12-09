@@ -1,7 +1,9 @@
 import React from "react";
 import { View, StyleSheet, Text } from "react-native";
+import { PresenterComponentsProps } from "../helpers/types"
 
-const ColourCard = (props) => {
+
+const ColourCard = (props: PresenterComponentsProps) => {
   return (
     <View
       style={{

@@ -14,7 +14,6 @@ import { Ionicons } from "@expo/vector-icons";
 import { deleteFavourite, fetchFavourites } from "../store/actions/colors";
 import { Snackbar } from "react-native-paper";
 
-
 const FavouriteScreen = (props) => {
   const favourites = useSelector((state) => state.colors.favourites);
   const [isLoading, setIsLoading] = useState(true);
@@ -68,10 +67,11 @@ const FavouriteScreen = (props) => {
 
   return (
     <View style={styles.screen}>
-         <FlatList
+      <FlatList
+        showsVerticalScrollIndicator={false}
         data={favourites}
         keyExtractor={(item, index) => item + index}
-        renderItem={({ item }) => 
+        renderItem={({ item }) =>
           isLoadingItem ? (
             <View style={styles.activityIndicator}>
               <ActivityIndicator size="small" color="grey" />
@@ -104,13 +104,14 @@ const FavouriteScreen = (props) => {
                   }}
                 >
                   <View style={styles.icon}>
-                    <Ionicons name="ios-close" size={32} color={ "#777" } />
+                    <Ionicons name="ios-close" size={32} color={"#777"} />
                   </View>
                 </TouchableOpacity>
               </View>
               <FlatList
                 data={item.data}
                 horizontal
+                showsHorizontalScrollIndicator={false}
                 keyExtractor={(item, index) => item + index}
                 renderItem={({ item, index }) => (
                   <View style={styles.item}>
@@ -129,9 +130,9 @@ const FavouriteScreen = (props) => {
         visible={isVisible}
         onDismiss={() => setIsVisible(false)}
         duration={3000}
-        style={{ backgroundColor: "grey", borderRadius: 10}}
+        style={{ backgroundColor: "grey", borderRadius: 10 }}
       >
-        Deleted 
+        Deleted
       </Snackbar>
     </View>
   );

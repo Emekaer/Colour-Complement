@@ -2,14 +2,17 @@ import React, { useState } from "react";
 import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { ntc } from "../functions/colorNames";
+import { ColourTile1Props} from "../helpers/types"
 
-const ColourTile = (props) => {
+
+const ColourTile = (props: ColourTile1Props) => {
   const [selected, setSelected] = useState(false);
 
   const longPressHandler = () => {
     setSelected((selected) => !selected);
     props.selection();
   };
+
   const pressHandler = () => {
     if (props.selectionMode) {
       longPressHandler();

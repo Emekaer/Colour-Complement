@@ -6,6 +6,7 @@ import {
   FlatList,
   Modal,
   TextInput,
+  Dimensions
 } from "react-native";
 import { HomeStackNavigationProp, HomeScreenRouteProp } from '../navigation/types';
 import { RootState } from "../store/store"
@@ -15,7 +16,7 @@ import { Snackbar } from "react-native-paper";
 
 import CustomHeaderButton from "../components/HeaderButton";
 import ColourTile from "../components/ColourTile";
-import ColourTile3 from "../components/ColourTile2";
+import ColourTile2 from "../components/ColourTile2";
 import InputPicker from "../components/InputPicker";
 import { useDispatch, useSelector } from "react-redux";
 import Swiper from "react-native-swiper";
@@ -32,16 +33,16 @@ interface IProps {
 const HomeScreen = (props: IProps) => {
   const selectedColor = useSelector((state: RootState) => state.colors.selectedColor);
   const Complements = useSelector((state: RootState) => state.colors.colorArray);
-  
-  let selected;
+
+  let selected: { title: string, data: typeof selectedColors };
 
 
-  const [selectedColors, setSelectedColors] = useState([]);
+  const [selectedColors, setSelectedColors] = useState<{ color: string }[]>([]);
   const [colour, setColour] = useState(false);
   const [chosenColor, setChosenColor] = useState(selectedColor);
   const [isVisible, setIsVisible] = useState(false);
   const [isAddMode, setIsAddMode] = useState(false);
-  const [picked, setPicked] = useState(selected);
+  const [picked, setPicked] = useState<typeof selected>();
   const [projectName, setProjectName] = useState(chosenColor.toUpperCase());
   const [selectionMode, setSelectionMode] = useState(false);
 
@@ -58,6 +59,24 @@ const HomeScreen = (props: IProps) => {
       setColour(true);
     }
   }, [route]);
+
+
+  const pressHandler = (color: string) => {
+    if (selectionMode) {
+      selectionHandler(color);
+    } else {
+      navigation.navigate("AdjustScreen", {
+        oldColor: selectedColor,
+        color: color,
+      });
+    }
+  };
+
+  const resetHandler = () => {
+    setColour(false);
+    setSelectedColors([]);
+  };
+
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -98,30 +117,20 @@ const HomeScreen = (props: IProps) => {
     chosenColor,
     selectedColor,
     selectedColors,
-    selected,
+    picked,
     Complements,
     selectionMode,
     pressHandler,
   ]);
 
-  const pressHandler = (color) => {
-    if (selectionMode) {
-      selectionHandler(color);
-    } else {
-      navigation.navigate("AdjustScreen", {
-        oldColor: selectedColor,
-        color: color,
-      });
-    }
-  };
 
-  const selectionHandler = (value) => {
+
+  const selectionHandler = (value: string) => {
     if (selectedColors.some((hue) => hue.color == value)) {
       const repeatedColor = selectedColors.find((hue) => hue.color === value);
       setSelectedColors(
         selectedColors.filter((value) => repeatedColor != value)
       );
-      return;
     } else {
       setSelectedColors([...selectedColors, { color: value }]);
     }
@@ -139,23 +148,20 @@ const HomeScreen = (props: IProps) => {
     dispatch(
       addFavourite({
         name: projectName,
-        title: picked.title,
-        data: picked.data,
+        title: picked?.title,
+        data: picked?.data,
       })
     );
   };
 
-  const setColourHandler = (color) => {
+  const setColourHandler = (color: string) => {
     dispatch(setColor(color));
     dispatch(addHistory(color));
     setChosenColor(color);
     setColour(true);
   };
 
-  const resetHandler = () => {
-    setColour(false);
-    setSelectedColors([]);
-  };
+
 
   let selectPane;
 
@@ -192,24 +198,27 @@ const HomeScreen = (props: IProps) => {
   let selectedArea;
   if (colour) {
     selectedArea = (
-      <FlatList
-        scrollEnabled={true}
-        numColumns={2}
-        data={Complements}
-        keyExtractor={(item) => item.title}
-        renderItem={({ item }) => (
-          <ColourTile
-            pressHandler={() => {
-              pressHandler(item.data);
-            }}
-            selectionMode={selectionMode}
-            selection={() => selectionHandler(item.data)}
-            chosenColour={item.data}
-            schemeType={item.title}
-            schemeColor={item.data}
-          />
-        )}
-      />
+      <View style={{ flex: 1, width: "100%", alignContent: "center", paddingHorizontal: "5%" }}>
+        <FlatList
+          scrollEnabled={true}
+          numColumns={2}
+          showsVerticalScrollIndicator={false}
+          data={Complements}
+          keyExtractor={(item) => item.title}
+          renderItem={({ item }) => (
+            <ColourTile
+              pressHandler={() => {
+                pressHandler(item.data);
+              }}
+              selectionMode={selectionMode}
+              selection={() => selectionHandler(item.data)}
+              chosenColour={item.data}
+              schemeType={item.title}
+              schemeColor={item.data}
+            />
+          )}
+        />
+      </View>
     );
   } else {
     selectedArea = (
@@ -229,15 +238,16 @@ const HomeScreen = (props: IProps) => {
           nextButton={<Text style={styles.buttonText}>›</Text>}
           prevButton={<Text style={styles.buttonText}>‹</Text>}
         >
-          {selectPane}
+            {selectPane}
           <View style={styles.selectionArea}>
             <InputPicker
               selectedColor={chosenColor}
-              submitHandler={(color) => setColourHandler(color)}
+              submitHandler={(color: string) => setColourHandler(color)}
             />
           </View>
         </Swiper>
       </View>
+      {selectedArea}
       <Modal visible={isAddMode} animationType="slide">
         <View style={styles.modal}>
           <Text style={styles.someText}>Name of Project</Text>
@@ -275,15 +285,15 @@ const HomeScreen = (props: IProps) => {
           <FlatList
             scrollEnabled={true}
             numColumns={2}
+            showsVerticalScrollIndicator={false}
             data={selectedColors}
             keyExtractor={(item) => item.color + `modal`}
             renderItem={({ item }) => (
-              <ColourTile3 chosenColour={item.color} schemeColor={item.color} />
+              <ColourTile2 chosenColour={item.color} schemeColor={item.color} />
             )}
           />
         </View>
       </Modal>
-      {selectedArea}
       <Snackbar
         visible={isVisible}
         onDismiss={() => setIsVisible(false)}
@@ -305,11 +315,12 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    marginTop: 50,
   },
   selectionArea: {
     flexDirection: "row",
     width: "100%",
-    height: 175,
+    height: Dimensions.get("window").height / 4,
     padding: 10,
     borderBottomColor: "#ccc",
     borderBottomWidth: 1,
@@ -354,7 +365,7 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
     borderWidth: 1.5,
     marginVertical: 10,
-    lineHeight: 25,
+    height: 40,
     width: "80%",
     textAlign: "center",
   },

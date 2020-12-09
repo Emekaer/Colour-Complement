@@ -147,6 +147,7 @@ const ColourDetailScreen = (props) => {
         <ColourBar chosenColour={mainColor} data={null}></ColourBar>
       </View>
       <FlatList
+        showsVerticalScrollIndicator={false}
         data={myData}
         keyExtractor={(item, index) => item.color + index}
         renderItem={({ item }) => (

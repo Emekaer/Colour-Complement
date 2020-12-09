@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { View, StyleSheet, Button, TextInput, Text, Alert } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, StyleSheet, TextInput, Text, Alert } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { setColor } from "../store/actions/colors";
 import { rgbToHex, hexToRgb } from "../functions/functions";
@@ -15,8 +15,8 @@ const InputPicker = (props) => {
   useEffect(() => {
     if (selectedColor != pickedColor) {
       selectedColor = pickedColor;
-      setChosenColor(pickedColor)
-      setChosenRGB(hexToRgb(pickedColor))
+      setChosenColor(pickedColor);
+      setChosenRGB(hexToRgb(pickedColor));
     }
   }, [selectedColor, pickedColor]);
 
@@ -27,9 +27,12 @@ const InputPicker = (props) => {
   const dispatch = useDispatch();
 
   const setColourHandlerHex = () => {
-    const check = /^#[0-9A-F]{6}$/i.test(`${chosenColor}`)
-    if (!check || chosenColor.length !== 7  ) {
-      Alert.alert("Incorrect input", "Please enter a complete HEX Value. e.g #FFFF00 or #0011FF");
+    const check = /^#[0-9A-F]{6}$/i.test(`${chosenColor}`);
+    if (!check || chosenColor.length !== 7) {
+      Alert.alert(
+        "Incorrect input",
+        "Please enter a complete HEX Value. e.g #FFFF00 or #0011FF"
+      );
       return;
     }
     dispatch(setColor(chosenColor));
@@ -58,7 +61,11 @@ const InputPicker = (props) => {
           placeholder={selectedColor.toUpperCase()}
           onChangeText={(value) => setChosenColor(value)}
         />
-        <MyButton disabled={props.disabled} title="Set Value" onPress={setColourHandlerHex} />
+        <MyButton
+          disabled={props.disabled}
+          title="Set Value"
+          onPress={setColourHandlerHex}
+        />
       </View>
       <View style={styles.inputView}>
         <Text style={styles.label}>RGB:</Text>
@@ -98,7 +105,11 @@ const InputPicker = (props) => {
             setChosenRGB({ r: chosenRGB.r, g: chosenRGB.g, b: value })
           }
         />
-        <MyButton disabled={props.disabled} title="Set Value" onPress={setColourHandlerRGB} />
+        <MyButton
+          disabled={props.disabled}
+          title="Set Value"
+          onPress={setColourHandlerRGB}
+        />
       </View>
     </View>
   );
@@ -119,17 +130,16 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
     borderWidth: 1.5,
     marginHorizontal: 10,
-    lineHeight: 25,
     width: 30,
     textAlign: "center",
+    height: 30,
   },
   input1: {
-    lineHeight: 32,
     borderColor: "#ccc",
     borderWidth: 1.5,
-    lineHeight: 25,
     marginHorizontal: 15,
     textAlign: "center",
+    height: 30,
     width: 65,
   },
   label: {

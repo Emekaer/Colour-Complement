@@ -13,7 +13,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Snackbar } from "react-native-paper";
 import { ntc } from "../functions/colorNames";
 
-
 import { setColor, fetchHistory, clearHistory } from "../store/actions/colors";
 
 const HistoryScreen = (props) => {
@@ -34,13 +33,13 @@ const HistoryScreen = (props) => {
             iconName={"md-close"}
             show={history ? "always" : "never"}
             colour={history.length === 0 ? "#aaa" : "white"}
-            disabled={history.length === 0 ? true: false}
+            disabled={history.length === 0 ? true : false}
             onPress={clearAllHandler}
           />
         </HeaderButtons>
       ),
     });
-  }, [dispatch, loadHistory,clearAllHandler,history]);
+  }, [dispatch, loadHistory, clearAllHandler, history]);
 
   const clearAllHandler = () => {
     setIsVisible(true);
@@ -87,6 +86,7 @@ const HistoryScreen = (props) => {
       <FlatList
         contentContainerStyle={styles.selectArea}
         scrollEnabled={true}
+        showsVerticalScrollIndicator={false}
         data={history}
         keyExtractor={(item) => item.id}
         renderItem={({ item, index }) => (
@@ -105,15 +105,14 @@ const HistoryScreen = (props) => {
                 dispatch(setColor(item.data));
               }}
             >
-              <View style={{alignItems: "center", justifyContent: "center"}}> 
-              <Text selectable={true} style={styles.colorText}>
-                {ntc.name(item.data)[1]} (
-                {ntc.name(item.data)[2] ? "Exactly" : "Approx."})
-              </Text>
+              <View style={{ alignItems: "center", justifyContent: "center" }}>
+                <Text selectable={true} style={styles.colorText}>
+                  {ntc.name(item.data)[1]} (
+                  {ntc.name(item.data)[2] ? "Exactly" : "Approx."})
+                </Text>
                 <Text selectable={true} style={styles.colorText}>
                   {item.data.toUpperCase()}
                 </Text>
-               
               </View>
             </TouchableOpacity>
           </View>
